@@ -1,0 +1,261 @@
+header{
+    box-sizing:border-box;
+    border-bottom:4px solid #030303;
+}
+.bg-light{
+    background-color: white !important;
+}
+#logo{
+    font-family: 'Pacifico',cursive;
+    font-size: 2.5rem;
+    /*text-align: center;*/
+    /*white-space: nowrap;*/
+
+}
+#logo a{
+    text-decoration: none;
+    color: #030303;
+}
+#logo a:hover{
+    color: #565656;
+}
+#logo a span{
+    white-space: nowrap;
+}
+.navbar-brand{
+    font-family: 'Pacifico',cursive;
+    font-size: 2.5rem;
+}
+.reg_and_auth{
+    white-space: nowrap;
+    text-align: right;
+}
+.reg_and_auth a{
+    border: 2px solid #030303;
+}
+.reg_and_auth a:hover{
+    border: 2px solid #030303;
+    background-color: #030303;
+    color:white;
+}
+@media (max-width:768px){
+    #logo{
+        text-align: center;
+
+    }
+    .reg_and_auth{
+        text-align: center;
+
+    }
+}
+@media (min-width:768px){
+    #logo{
+        white-space: nowrap;
+    }
+}
+.images img{
+    width:100%;
+    height:auto;
+}
+.images > div > div{
+    position: relative;
+}
+.images > div > div > .album_info{
+    position: absolute;
+    left: calc(1.5rem / 2);
+    top: 0;
+    background-color: rgba(0,0,0,.65);
+    color:white;
+    width: calc(100% - 1.5rem);
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+}
+.images > div > div:hover > .album_info{
+    height: 100%;
+}
+
+/* .album_info{
+   position: absolute;
+   left: calc(1.5rem / 2);
+   top: 0;
+   background-color: rgba(0,0,0,.65);
+   color:white;
+   width: calc(100% - 1.5rem);
+ }*/
+.images h3{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.album_info h3 a{
+    text-decoration: none;
+    color: white;
+}
+.album_info h3 a:hover{
+    color: #99CC40;
+    border-bottom: 1px dashed #99CC40;
+}
+.album_info .description, .album_info .totally_images{
+    font-size: 0.8rem;
+}
+.images > div > div > .add_image_btn{
+    width: 30px;
+    height: 30px;
+    /*background-color: white;*/
+    background-color: #99CC40;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    /*color: transparent;*/
+    font-size: 30px;
+    transform: translate(-50%, -50%) rotateZ(0);
+    box-shadow: 0 0 2px rgba(0,0,0,.75);
+    opacity: 0;
+    /*transition-property: opacity,background-color,color;
+    transition-duration: .3s;*/
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    text-decoration: none;
+    text-align: center;
+    line-height: 26px;
+    font-weight: bold;
+    color: black;
+
+}
+.add_image_link{
+    display: inline-block;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #030303;
+    background-color: #99cc41;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+.add_image_link:hover{
+    color: #000;
+    background-color: #B2ED4B;
+}
+.add_album_btn,.add_image_btn{
+    width: 50px;
+    height: 50px;
+    background-color: #99CC40;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 30px;
+    transform:rotateZ(0);
+    box-shadow: 0 0 2px rgba(0,0,0,.75);
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    text-decoration: none;
+    text-align: center;
+    line-height: 26px;
+    line-height: 2.5rem;
+    font-weight: bold;
+    color: black;
+}
+.add_album_btn:hover,.add_image_btn:hover{
+    color: black;
+    transform:rotateZ(360deg);
+    background-color: #ACE648;
+}
+
+.images > div > div:hover > .add_image_btn{
+    opacity: 1;
+}
+.images > div > div:hover > .add_image_btn:hover{
+    background-color: black;
+    color: #99CC40;
+    transform: translate(-50%, -50%) rotateZ(360deg);
+}
+/*.images > div > div > .add_image_btn::before{
+ background-color: black;
+ width: 100%;
+ height: 4px;
+ content: "";
+ position: absolute;
+ top:calc(50% - 2px);
+}
+.images > div > div > .add_image_btn::after{
+ background-color: black;
+ width: 100%;
+ height: 4px;
+ content: "";
+ position: absolute;
+ left: 0;
+ top: 0;
+ top:calc(50% - 2px);
+ transform: rotateZ(90deg);
+}
+.images > div > div > .add_image_btn:hover::before{
+ background-color: #99CC40;
+ width: 100%;
+ height: 4px;
+ content: "";
+ position: absolute;
+ top:calc(50% - 2px);
+}
+.images > div > div > .add_image_btn:hover::after{
+ background-color: #99CC40;
+ width: 100%;
+ height: 4px;
+ content: "";
+ position: absolute;
+ left: 0;
+ top: 0;
+ top:calc(50% - 2px);
+ transform: rotateZ(90deg);
+}*/
+/*    .album_info .add_image_btn:hover::before{
+    background-color: black;
+    width: 100%;
+    height: 4px;
+    content: "";
+    position: absolute;
+    top:calc(50% - 2px);
+  }*/
+
+h3 .edit_album{
+    font-size: 1rem;
+    color: #99CC40 !important;
+    border: none !important;
+    /*transform: rotateZ(-5deg);*/
+    opacity: 0;
+}
+h3:hover .edit_album{
+    opacity: 1;
+}
+h3 .edit_album:hover{
+    color: #ACE648 !important;
+}
+h3 .edit_album:hover i{
+    transform: rotateZ(-20deg);
+
+}
+.no_images .edit_album{
+    opacity: 1;
+}
+#info.success{
+    background-color: #A0DEAF;
+    color: #152118;
+}
+#info.error{
+    background-color: #DEA0A0;
+    color: #3E2525;
+}
+.footer{
+    background-color: #565656;
+    color: white;
+    box-sizing:border-box;
+    border-left:8px solid #030303;
+    border-right:8px solid #030303;
+}
