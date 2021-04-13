@@ -1,5 +1,6 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
+import * as StackBlur from "stackblur-canvas";
 
 export class AddImage extends React.Component{
 
@@ -8,6 +9,12 @@ export class AddImage extends React.Component{
         this.state = {};
         this.handlerSubmit = this.handlerSubmit.bind(this);
         this.handlerDrop = this.handlerDrop.bind(this);
+        this.handlerBlurChange = this.handlerBlurChange.bind(this);
+        this.bufferCanvas = document.createElement('canvas');
+    }
+
+    componentDidMount(){
+        this.setState({blurValue : 0});
     }
 
     handlerInput(e){
@@ -48,6 +55,17 @@ export class AddImage extends React.Component{
         e.preventDefault();
     }
 
+    handlerBlurChange(e){
+        let v = e.target.value;
+        this.setState({blurValue : v});
+        const ctx = this.refs.file_canvas.getContext('2d');
+        ctx.drawImage(this.bufferCanvas, 0, 0);
+        const fileCanvas = this.refs.file_canvas;
+        StackBlur.canvasRGB(
+            fileCanvas, 0, 0, fileCanvas.width, fileCanvas.height, v
+        );
+    }
+
     handlerDrop(e){
         e.preventDefault();
         let item = e.dataTransfer.items[0];
@@ -63,6 +81,7 @@ export class AddImage extends React.Component{
                 let img = new Image();
                 img.src = str;
                 const fileCanvas = this.refs.file_canvas;
+                const bufferCanvas = this.bufferCanvas;
                 img.onload = function(){
                     let imgWidth = this.naturalWidth;
                     let imgHeight = this.naturalHeight;
@@ -70,8 +89,8 @@ export class AddImage extends React.Component{
                     fileCanvas.width = imgWidth;
                     fileCanvas.height = imgHeight;
                     const ctx = fileCanvas.getContext('2d');
-                    ctx.drawImage(this,0,0,imgWidth,imgHeight);
-                    img = null;
+                    //ctx.drawImage(this,0,0,imgWidth,imgHeight);
+                    //img = null;
                     /*const buff = document.createElement('canvas');
                     buff.width = fileCanvas.width;
                     buff.height = fileCanvas.height;
@@ -84,6 +103,12 @@ export class AddImage extends React.Component{
                             fileCanvas, 0, 0, fileCanvas.width, fileCanvas.height, blurRange.value
                         );
                     });*/
+                    bufferCanvas.width = fileCanvas.width;
+                    bufferCanvas.height = fileCanvas.height;
+                    const bctx = bufferCanvas.getContext('2d');
+                    bctx.drawImage(this,0,0);
+                    ctx.drawImage(bufferCanvas, 0, 0);
+                    img = null;
                 };
             });
         }
@@ -109,7 +134,7 @@ export class AddImage extends React.Component{
                                 </div>
                                 <div id="controls" className="my-2">
                                     Размытие :
-                                    <input id="blurRange" type="range" min="0" max="50" value="0" />
+                                    <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerBlurChange}/>
                                 </div>
                                 <input type="submit" name="add_image_submit"
                                        className="form-control btn btn-primary my-3" value="Добавить изображение" />
