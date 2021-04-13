@@ -8,7 +8,7 @@ function Album(props){
             <div className="col-md-4 my-3">
                 <div className="album_info">
                     <h3 className="text-center my-1">
-                        <Link to={/album/ + props.id}>{props.title}</Link>
+                        <Link to={'/album/' + props.id}>{props.title}</Link>
                         <Link to={'/edit_album/' + props.id} className="edit_album"
                               title="Редактировать название и описание">
                             <i className="fas fa-pen-alt mx-2"></i>
@@ -19,7 +19,9 @@ function Album(props){
                         {props.description}
                     </p>
                 </div>
-                <img src={'uploads/' + props.filename} alt={props.title} />
+                <Link to={'/add_image/' + props.id} title="Добавить изображение"
+                   className="add_image_btn">+</Link>
+                <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + props.filename} alt={props.title} />
             </div>
         );
     } else {
@@ -33,7 +35,7 @@ function Album(props){
                     </Link>
                 </h3>
                 <p>В этом альбоме пока нет изображений.
-                    <Link to="/add_image" className="add_image_link">
+                    <Link to={'/add_image/' + props.id} className="add_image_link">
                         Добавить
                     </Link>
                 </p>

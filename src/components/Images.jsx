@@ -3,7 +3,7 @@ import React from 'react';
 function SingleImage(props){
     return (
         <div className="col-md-4 my-3">
-            <img src={'uploads/' + props.filename} alt={props.title}/>
+            <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + props.filename} alt={props.title}/>
         </div>
     );
 }
