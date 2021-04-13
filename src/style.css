@@ -244,6 +244,11 @@ h3 .edit_album:hover i{
 .no_images .edit_album{
     opacity: 1;
 }
+#info{
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 #info.success{
     background-color: #A0DEAF;
     color: #152118;

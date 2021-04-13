@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Image(props){
+function SingleImage(props){
     return (
         <div className="col-md-4 my-3">
-            <img src={'uploads/' + props.filename} />
+            <img src={'uploads/' + props.filename} alt={props.title}/>
         </div>
     );
 }
@@ -12,13 +12,12 @@ export class Images extends React.Component{
     constructor() {
         super();
         this.state = {
-            attr : `data-masonry='{ "percentPosition": true }'`,
             images : []
         };
     }
     componentDidMount(){
         const formData = new FormData();
-        formData.append('album_id',this.props.albumid);
+        formData.append('album_id',this.props.match.params.id);
         fetch('http://y91756wn.beget.tech/imagegallery/php/getImages.php',{
             method : 'POST',
             body : formData
@@ -29,8 +28,9 @@ export class Images extends React.Component{
                 this.setState({albumDescription : result.album_description});
                 let images = [];
                 result.images.forEach(img => {
-                    images.push(<Image
+                    images.push(<SingleImage
                         filename={img.filename}
+                        title={img.title}
                     />);
                 });
                 this.setState({images : images});
@@ -45,7 +45,7 @@ export class Images extends React.Component{
                 <p className="album-description my-3">
                     {this.state.albumDescription}
                 </p>
-                <div className="row" data-masonry=''>
+                <div className="row">
                     {this.state.images}
                 </div>
             </div>
