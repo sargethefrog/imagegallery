@@ -26,6 +26,8 @@ export class Images extends React.Component{
                 console.log(result);
                 this.setState({albumTitle : result.album_title});
                 this.setState({albumDescription : result.album_description});
+                this.setState({albumAuthor : result.author});
+                this.setState({creationDate : result.datetime});
                 let images = [];
                 result.images.forEach(img => {
                     images.push(<SingleImage
@@ -42,6 +44,10 @@ export class Images extends React.Component{
                 <h1 className="text-center">
                     {this.state.albumTitle}
                 </h1>
+                <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
+                </p>
+                <p className="album-creationdate my-3"><i className="fas fa-clock ms-1 me-2"></i>Дата создания
+                    : <b>{this.state.creationDate}</b></p>
                 <p className="album-description my-3">
                     {this.state.albumDescription}
                 </p>
