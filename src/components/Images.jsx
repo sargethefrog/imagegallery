@@ -3,7 +3,13 @@ import React from 'react';
 function SingleImage(props){
     return (
         <div className="col-md-4 my-3">
-            <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + props.filename} alt={props.title}/>
+            <figure>
+                <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + props.filename} alt={props.title}/>
+                <figcaption>{props.title}</figcaption>
+                <div className="image_description">{props.description}</div>
+                <div className="image_datetime"><i className="fas fa-clock ms-1 me-2"></i>Добавлено
+                    : {props.datetime}</div>
+            </figure>
         </div>
     );
 }
@@ -24,8 +30,10 @@ export class Images extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 console.log(result);
-                this.setState({albumTitle : result.album_title});
-                this.setState({albumDescription : result.album_description});
+                //this.setState({albumTitle : result.album_title});
+                //this.setState({albumDescription : result.album_description});
+                this.setState({albumTitle : result.title});
+                this.setState({albumDescription : result.description});
                 this.setState({albumAuthor : result.author});
                 this.setState({creationDate : result.datetime});
                 let images = [];
@@ -33,6 +41,8 @@ export class Images extends React.Component{
                     images.push(<SingleImage
                         filename={img.filename}
                         title={img.title}
+                        description={img.description}
+                        datetime={img.datetime}
                     />);
                 });
                 this.setState({images : images});
@@ -46,7 +56,7 @@ export class Images extends React.Component{
                 </h1>
                 <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
                 </p>
-                <p className="album-creationdate my-3"><i className="fas fa-clock ms-1 me-2"></i>Дата создания
+                <p className="album-creationdate my-3"><i className="fas fa-clock ms-1 me-2"></i>Время создания
                     : <b>{this.state.creationDate}</b></p>
                 <p className="album-description my-3">
                     {this.state.albumDescription}

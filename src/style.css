@@ -1,3 +1,6 @@
+body{
+    font-size: 18px;
+}
 header{
     box-sizing:border-box;
     border-bottom:4px solid #030303;
@@ -21,6 +24,7 @@ header{
 }
 #logo a span{
     white-space: nowrap;
+    margin-left: 10px;
 }
 .navbar-brand{
     font-family: 'Pacifico',cursive;
@@ -162,6 +166,7 @@ header{
     line-height: 2.5rem;
     font-weight: bold;
     color: black;
+    margin-left: 10px;
 }
 .add_album_btn:hover,.add_image_btn:hover{
     color: black;
@@ -176,6 +181,9 @@ header{
     background-color: black;
     color: #99CC40;
     transform: translate(-50%, -50%) rotateZ(360deg);
+}
+.images figcaption{
+    font-size: 1.5rem;
 }
 /*.images > div > div > .add_image_btn::before{
  background-color: black;
