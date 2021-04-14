@@ -257,10 +257,30 @@ h3 .edit_album:hover i{
     background-color: #DEA0A0;
     color: #3E2525;
 }
+#add_image_form input[type='file']{
+    display: none;
+}
 #drop_zone{
     border: 3px dashed #99CC41;
     width: 100%;
-    height: 100px;
+    height: 160px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#selectFile{
+    background-color: #99cc41;
+    padding: 10px 8px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    transition: .3s;
+    color: #333;
+}
+#selectFile:hover{
+    background-color: #B2ED4B;
+    color: #000;
 }
 #file_canvas_wrapper{
     width: 100%;
@@ -271,7 +291,7 @@ h3 .edit_album:hover i{
 }
 #upload_icon_wrapper{
     width: 100%;
-    height: 100%;
+    height: 100px;
     text-align: center;
     font-size: 3rem;
     display: flex;

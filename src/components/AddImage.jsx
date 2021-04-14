@@ -10,6 +10,8 @@ export class AddImage extends React.Component{
         this.handlerSubmit = this.handlerSubmit.bind(this);
         this.handlerDrop = this.handlerDrop.bind(this);
         this.handlerBlurChange = this.handlerBlurChange.bind(this);
+        this.handlerSelectFile = this.handlerSelectFile.bind(this);
+        this.handlerFileChange = this.handlerFileChange.bind(this);
         this.bufferCanvas = document.createElement('canvas');
     }
 
@@ -55,6 +57,42 @@ export class AddImage extends React.Component{
         e.preventDefault();
     }
 
+    handlerSelectFile(){
+        this.refs.image_file.click();
+    }
+
+    fileProcessing(files){
+        const file = files[0];
+        console.log(file);
+        const reader = new FileReader();
+        const fileCanvas = this.refs.file_canvas;
+        const bufferCanvas = this.bufferCanvas;
+        reader.onload = function(e){
+            //output.innerText = e.target.result;
+            let img = new Image();
+            img.src = e.target.result;
+            img.onload = function(){
+                let imgWidth = this.naturalWidth;
+                let imgHeight = this.naturalHeight;
+                fileCanvas.hidden = false;
+                fileCanvas.width = imgWidth;
+                fileCanvas.height = imgHeight;
+                bufferCanvas.width = fileCanvas.width;
+                bufferCanvas.height = fileCanvas.height;
+                const ctx = fileCanvas.getContext('2d');
+                const bctx = bufferCanvas.getContext('2d');
+                bctx.drawImage(this,0,0);
+                ctx.drawImage(bufferCanvas, 0, 0);
+                img = null;
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+
+    handlerFileChange(e){
+        this.fileProcessing(e.target.files);
+    }
+
     handlerBlurChange(e){
         let v = e.target.value;
         this.setState({blurValue : v});
@@ -68,7 +106,9 @@ export class AddImage extends React.Component{
 
     handlerDrop(e){
         e.preventDefault();
-        let item = e.dataTransfer.items[0];
+        const files = e.dataTransfer.files;
+        this.fileProcessing(files);
+        /*let item = e.dataTransfer.items[0];
         if(item.kind == "file" && item.type.indexOf("image") != -1){
             let f = item.getAsFile();
             f.arrayBuffer().then(buffer => {
@@ -89,20 +129,6 @@ export class AddImage extends React.Component{
                     fileCanvas.width = imgWidth;
                     fileCanvas.height = imgHeight;
                     const ctx = fileCanvas.getContext('2d');
-                    //ctx.drawImage(this,0,0,imgWidth,imgHeight);
-                    //img = null;
-                    /*const buff = document.createElement('canvas');
-                    buff.width = fileCanvas.width;
-                    buff.height = fileCanvas.height;
-                    const bctx = buff.getContext('2d');
-                    bctx.drawImage(this,0,0);
-                    ctx.drawImage(buff, 0, 0);
-                    blurRange.addEventListener('change',function(){
-                        ctx.drawImage(buff, 0, 0);
-                        StackBlur.canvasRGB(
-                            fileCanvas, 0, 0, fileCanvas.width, fileCanvas.height, blurRange.value
-                        );
-                    });*/
                     bufferCanvas.width = fileCanvas.width;
                     bufferCanvas.height = fileCanvas.height;
                     const bctx = bufferCanvas.getContext('2d');
@@ -111,7 +137,7 @@ export class AddImage extends React.Component{
                     img = null;
                 };
             });
-        }
+        }*/
     }
     render(){
         return (
@@ -122,12 +148,13 @@ export class AddImage extends React.Component{
                         <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" />
                             <textarea name="description" placeholder="Описание"
                                       className="form-control my-3"></textarea>
-                            <input type="file" name="imagefile" className="form-control my-3" />
+                            <input type="file" name="imagefile" className="form-control my-3" ref="image_file" onChange={this.handlerFileChange}/>
                                 <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
                                     <div id="upload_icon_wrapper">
                                         <i className="fas fa-file-upload"></i>
 
                                     </div>
+                                    <button id="selectFile" type="button" onClick={this.handlerSelectFile}>Обзор...</button>
                                 </div>
                                 <div id="file_canvas_wrapper">
                                     <canvas id="file_canvas" hidden ref="file_canvas"></canvas>
