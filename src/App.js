@@ -8,6 +8,8 @@ import {Footer} from "./components/Footer";
 import {EditAlbum} from "./components/EditAlbum";
 import {AddAlbum} from "./components/AddAlbum";
 import {AddImage} from "./components/AddImage";
+import {Reg} from "./components/Reg";
+import {Auth} from "./components/Auth";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/album/:id" component={Images}/>
           <Route path="/add_album" render={() => <AddAlbum />} />
           <Route path="/add_image/:id" component={AddImage} />
+          <Route path="/reg" render={() => <Reg />} />
+          <Route path="/auth" render={() => <Auth />} />
           {/*<Albums />*/}
           {/*<Images albumid="1" />*/}
           {/*<Images albumid="2" />*/}
