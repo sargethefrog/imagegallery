@@ -25,6 +25,7 @@ export class AddImage extends React.Component{
         this.setState({brightnessValue : 0});
         this.setState({contrastValue : 0});
         this.setState({saturationValue : 10});
+        this.setState({fileAdded : false});
     }
 
     handlerInput(e){
@@ -35,26 +36,31 @@ export class AddImage extends React.Component{
 
     handlerSubmit(e){
         e.preventDefault();
-        const fileCanvas = this.refs.file_canvas;
-        const dataURL = fileCanvas.toDataURL('image/jpeg');
-        const fileContent = dataURL.slice(dataURL.indexOf(",") + 1);
-        //const formData = new FormData(e.target);
-        const formData = new FormData();
-        formData.append('album_id',this.props.match.params.id);
-        formData.append('title',this.state.title);
-        formData.append('description',this.state.description);
-        formData.append('data',fileContent);
-        fetch('http://y91756wn.beget.tech/imagegallery/php/uploadImage.php',{
-            method : 'POST',
-            body : formData
-        }).then(response => response.json())
-            .then(result => {
-                if(result.result === 'success'){
-                    this.setState({info :  <Redirect to={'/album/' + this.props.match.params.id} />});
-                } else {
-                    this.setState({info : <div id="info" className="error">Ошибка загрузки изображения.</div>})
-                }
-            });
+        if(this.state.fileAdded){
+            const fileCanvas = this.refs.file_canvas;
+            const dataURL = fileCanvas.toDataURL('image/jpeg');
+            const fileContent = dataURL.slice(dataURL.indexOf(",") + 1);
+            //const formData = new FormData(e.target);
+            const formData = new FormData();
+            formData.append('album_id',this.props.match.params.id);
+            formData.append('title',this.state.title);
+            formData.append('description',this.state.description);
+            formData.append('data',fileContent);
+            fetch('http://y91756wn.beget.tech/imagegallery/php/uploadImage.php',{
+                method : 'POST',
+                body : formData
+            }).then(response => response.json())
+                .then(result => {
+                    if(result.result === 'success'){
+                        this.setState({info :  <Redirect to={'/album/' + this.props.match.params.id} />});
+                    } else {
+                        this.setState({info : <div id="info" className="error">Ошибка загрузки изображения.</div>})
+                    }
+                });
+        } else {
+            this.setState({info : <div id="info" className="error">Необходимо сначала выбрать файл!</div>});
+        }
+
     }
 
     handlerDragOver(e){
@@ -75,6 +81,7 @@ export class AddImage extends React.Component{
         const reader = new FileReader();
         const fileCanvas = this.refs.file_canvas;
         const bufferCanvas = this.bufferCanvas;
+        let component = this;
         reader.onload = function(e){
             //output.innerText = e.target.result;
             let img = new Image();
@@ -92,6 +99,7 @@ export class AddImage extends React.Component{
                 bctx.drawImage(this,0,0);
                 ctx.drawImage(bufferCanvas, 0, 0);
                 img = null;
+                component.setState({fileAdded : true});
             };
         };
         reader.readAsDataURL(file);
