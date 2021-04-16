@@ -1,6 +1,7 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
 import * as StackBlur from "stackblur-canvas";
+import vintagejs from "vintagejs";
 
 export class AddImage extends React.Component{
 
@@ -10,6 +11,10 @@ export class AddImage extends React.Component{
         this.handlerSubmit = this.handlerSubmit.bind(this);
         this.handlerDrop = this.handlerDrop.bind(this);
         this.handlerBlurChange = this.handlerBlurChange.bind(this);
+        this.handlerBrightnessChange = this.handlerBrightnessChange.bind(this);
+        this.handlerContrastChange = this.handlerContrastChange.bind(this);
+        this.handlerSaturationChange = this.handlerSaturationChange.bind(this);
+        this.handlerControlsChange = this.handlerControlsChange.bind(this);
         this.handlerSelectFile = this.handlerSelectFile.bind(this);
         this.handlerFileChange = this.handlerFileChange.bind(this);
         this.bufferCanvas = document.createElement('canvas');
@@ -17,6 +22,9 @@ export class AddImage extends React.Component{
 
     componentDidMount(){
         this.setState({blurValue : 0});
+        this.setState({brightnessValue : 0});
+        this.setState({contrastValue : 0});
+        this.setState({saturationValue : 10});
     }
 
     handlerInput(e){
@@ -104,40 +112,72 @@ export class AddImage extends React.Component{
         );
     }
 
+    handlerControlsChange(e){
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({[name] : value});
+        let brightness = this.refs.brightnessRange.value / 10;
+        let contrast = this.refs.contrastRange.value / 10;
+        let saturation = this.refs.saturationRange.value / 10;
+        let blur = +this.refs.blurRange.value;
+        console.log(blur);
+        const effect = {brightness : brightness,contrast : contrast,saturation : saturation};
+        console.log(effect);
+        const srcElt = this.bufferCanvas;
+        const ctx = this.refs.file_canvas.getContext('2d');
+        vintagejs(srcElt,effect)
+            .then(res => {
+                if(!blur){
+                    ctx.drawImage(res.getCanvas(),0,0);
+                } else {
+                    let processedCanvas = res.getCanvas();
+                    StackBlur.canvasRGB(
+                        processedCanvas, 0, 0, processedCanvas.width, processedCanvas.height, blur
+                    );
+                    ctx.drawImage(processedCanvas,0,0);
+                }
+            });
+    }
+
+    handlerBrightnessChange(e){
+        let v = e.target.value;
+        this.setState({brightnessValue : v});
+        //const srcElt = this.refs.file_canvas;
+        const srcElt = this.bufferCanvas;
+        //const ctx = srcElt.getContext('2d');
+        const ctx = this.refs.file_canvas.getContext('2d');
+        vintagejs(srcElt,{brightness : v / 10})
+            .then(res => {
+                ctx.drawImage(res.getCanvas(),0,0);
+            });
+    }
+
+    handlerContrastChange(e){
+        let v = e.target.value;
+        this.setState({contrastValue : v});
+        const srcElt = this.bufferCanvas;
+        const ctx = this.refs.file_canvas.getContext('2d');
+        vintagejs(srcElt,{contrast : v / 10})
+            .then(res => {
+                ctx.drawImage(res.getCanvas(),0,0);
+            });
+    }
+
+    handlerSaturationChange(e){
+        let v = e.target.value;
+        this.setState({saturationValue : v});
+        const srcElt = this.bufferCanvas;
+        const ctx = this.refs.file_canvas.getContext('2d');
+        vintagejs(srcElt,{saturation : v / 10})
+            .then(res => {
+                ctx.drawImage(res.getCanvas(),0,0);
+            });
+    }
+
     handlerDrop(e){
         e.preventDefault();
         const files = e.dataTransfer.files;
         this.fileProcessing(files);
-        /*let item = e.dataTransfer.items[0];
-        if(item.kind == "file" && item.type.indexOf("image") != -1){
-            let f = item.getAsFile();
-            f.arrayBuffer().then(buffer => {
-                let view = new Uint8Array(buffer);
-                let str = '';
-                for(let i = 0,l = view.length;i < l;i++){
-                    str += String.fromCharCode(view[i]);
-                }
-                str = "data:" + item.type + ";base64," + window.btoa(str);
-                let img = new Image();
-                img.src = str;
-                const fileCanvas = this.refs.file_canvas;
-                const bufferCanvas = this.bufferCanvas;
-                img.onload = function(){
-                    let imgWidth = this.naturalWidth;
-                    let imgHeight = this.naturalHeight;
-                    fileCanvas.hidden = false;
-                    fileCanvas.width = imgWidth;
-                    fileCanvas.height = imgHeight;
-                    const ctx = fileCanvas.getContext('2d');
-                    bufferCanvas.width = fileCanvas.width;
-                    bufferCanvas.height = fileCanvas.height;
-                    const bctx = bufferCanvas.getContext('2d');
-                    bctx.drawImage(this,0,0);
-                    ctx.drawImage(bufferCanvas, 0, 0);
-                    img = null;
-                };
-            });
-        }*/
     }
     render(){
         return (
@@ -160,8 +200,17 @@ export class AddImage extends React.Component{
                                     <canvas id="file_canvas" hidden ref="file_canvas"></canvas>
                                 </div>
                                 <div id="controls" className="my-2">
+                                    Яркость :
+                                    <input id="brightnessRange" type="range" min="-10" max="10" value={this.state.brightnessValue} onChange={this.handlerControlsChange} ref="brightnessRange" name="brightnessValue" />
+                                    <br />
+                                    Контраст :
+                                    <input id="contrastRange" type="range" min="-10" max="10" value={this.state.contrastValue} onChange={this.handlerControlsChange} ref="contrastRange" name="contrastValue" />
+                                    <br />
+                                    Насыщенность :
+                                    <input id="saturationRange" type="range" min="0" max="10" value={this.state.saturationValue} onChange={this.handlerControlsChange} ref="saturationRange" name="saturationValue" />
+                                    <br />
                                     Размытие :
-                                    <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerBlurChange}/>
+                                    <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerControlsChange} ref="blurRange" name="blurValue" />
                                 </div>
                                 <input type="submit" name="add_image_submit"
                                        className="form-control btn btn-primary my-3" value="Добавить изображение" />
