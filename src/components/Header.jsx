@@ -36,7 +36,6 @@ class AuthPanel extends React.Component{
             credentials : 'include'
         }).then(response => response.json())
             .then(result => {
-                console.log('AUTH : ', result);
                 if(result.result === 'error'){
                     this.setState({loggedIn : false});
                 } else {
@@ -65,10 +64,10 @@ class AuthPanel extends React.Component{
         ); else return (
             <div className="reg_and_auth col-md-4">
                 <Link to="/reg" className="btn ms-2">
-                    <i className="fa fa-address-book" aria-hidden="true"></i>
+                    <i className="fa fa-address-book me-1" aria-hidden="true"></i>
                     <span className="visible-md">Регистрация</span></Link>
-                <Link to="/auth" className="btn">
-                    <i className="fa fa-sign-in-alt" aria-hidden="true"></i>
+                <Link to="/auth" className="btn ms-1">
+                    <i className="fa fa-sign-in-alt me-1" aria-hidden="true"></i>
                     Вход
                 </Link>
             </div>
@@ -88,7 +87,6 @@ export class Header extends React.Component{
         fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php')
             .then(response => response.json())
             .then(result => {
-                console.log('AUTH: ', result);
                 if(result.result != 'error'){
                     this.setState({
                         loggedIn : true,

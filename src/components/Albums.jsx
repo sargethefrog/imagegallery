@@ -3,7 +3,6 @@ import {Link} from "react-router-dom";
 import {Header} from "./Header";
 
 function Album_old(props){
-    //alert(props.count);
     if(props.count != 0){
         return (
             <div className="col-md-4 my-3">
@@ -134,27 +133,28 @@ export class Albums extends React.Component{
                         addAlbumLink : <Link to="/add_album" className="add_album_btn" title="Добавить альбом">+</Link>
                     });
                 }
-            });
-        fetch('http://y91756wn.beget.tech/imagegallery/php/getAlbums.php')
-            .then(response => response.json())
-            .then(result => {
-                result.forEach((album,i) => {
-                    console.log(album);
-                    let canEditAlbum = false;
-                    if(album.user_id === this.state.userId){
-                        canEditAlbum = true;
-                    }
-                    albums.push(<Album
-                        title={album.title}
-                        description={album.description}
-                        count={album.count}
-                        filename = {album.filename}
-                        id={album.id}
-                        edit={canEditAlbum}
-                    />);
-                    console.log(this.state);
-                });
-                this.setState({albums : albums});
+                fetch('http://y91756wn.beget.tech/imagegallery/php/getAlbums.php')
+                    .then(response => response.json())
+                    .then(result => {
+                        result.forEach((album) => {
+                            console.log(album);
+                            let canEditAlbum = false;
+                            if(album.user_id === this.state.userId){
+                                canEditAlbum = true;
+                            }
+                            albums.push(<Album
+                                title={album.title}
+                                description={album.description}
+                                count={album.count}
+                                filename = {album.filename}
+                                id={album.id}
+                                edit={canEditAlbum}
+                            />);
+                            console.log(this.state);
+                        });
+                        this.setState({albums : albums});
+                    });
+
             });
     }
     render(){

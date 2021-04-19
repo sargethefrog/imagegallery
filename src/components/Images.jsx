@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
 function SingleImage(props){
     return (
@@ -29,13 +30,15 @@ export class Images extends React.Component{
             body : formData
         }).then(response => response.json())
             .then(result => {
-                console.log(result);
-                //this.setState({albumTitle : result.album_title});
-                //this.setState({albumDescription : result.album_description});
-                this.setState({albumTitle : result.title});
-                this.setState({albumDescription : result.description});
-                this.setState({albumAuthor : result.author});
-                this.setState({creationDate : result.datetime});
+                console.log('GET IMAGES : ', result);
+                this.setState({
+                    albumTitle : result.title,
+                    albumDescription : result.description,
+                    albumAuthor : result.author,
+                    creationDate : result.datetime,
+                    albumId : result.id,
+                    userId : result.userId
+                });
                 let images = [];
                 result.images.forEach(img => {
                     images.push(<SingleImage
@@ -46,13 +49,41 @@ export class Images extends React.Component{
                     />);
                 });
                 this.setState({images : images});
+                fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php',{
+                    credentials : "include"
+                }).then(response => response.json())
+                    .then(result => {
+                        if(result !== 'error' && result.id === this.state.userId){
+                            this.setState({
+                                addImageBtn : <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
+                                                    className="add_image_btn">+</Link>
+                            });
+                        } else {
+                            this.setState({addImageBtn : ''});
+                        }
+                    });
             });
+        /*fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php',{
+            credentials : "include"
+        }).then(response => response.json())
+            .then(result => {
+                alert(`loggedUserId : ${result.id}\nalbumAuthorId : ${this.state.userId}`);
+                if(result !== 'error' && result.id === this.state.userId){
+                    this.setState({
+                        addImageBtn : <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
+                                            className="add_image_btn">+</Link>
+                    });
+                } else {
+                    this.setState({addImageBtn : ''});
+                }
+            });*/
     }
     render(){
         return (
             <div className="container images">
                 <h1 className="text-center">
                     {this.state.albumTitle}
+                    {this.state.addImageBtn}
                 </h1>
                 <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
                 </p>
