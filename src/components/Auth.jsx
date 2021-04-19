@@ -14,16 +14,19 @@ export class Auth extends React.Component{
         const formData = new FormData(e.target);
         fetch('http://y91756wn.beget.tech/imagegallery/php/handlerAuth.php',{
             method : 'POST',
-            body : formData
+            body : formData,
+            credentials : "include"
         }).then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
-                    this.setState({info : <Redirect to="/" />})
+                    alert('Авторизация прошла успешно!');
+                    /*this.setState({info : <Redirect to="/" />});*/
                 } else {
                     this.setState({info : <div id="info" className="error">Неверный логин и / или пароль.</div>})
                 }
             });
     }
+
     render(){
         return (
             <div className="container">

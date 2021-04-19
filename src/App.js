@@ -10,6 +10,7 @@ import {AddAlbum} from "./components/AddAlbum";
 import {AddImage} from "./components/AddImage";
 import {Reg} from "./components/Reg";
 import {Auth} from "./components/Auth";
+import {Logout} from "./components/Logout";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/add_image/:id" component={AddImage} />
           <Route path="/reg" render={() => <Reg />} />
           <Route path="/auth" render={() => <Auth />} />
+          <Route path="/logout" render={() => <Logout />} />
           {/*<Albums />*/}
           {/*<Images albumid="1" />*/}
           {/*<Images albumid="2" />*/}
