@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect} from "react-router-dom";
+import {Header} from "./Header";
 
 export class Auth extends React.Component{
 
@@ -19,8 +19,7 @@ export class Auth extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
-                    alert('Авторизация прошла успешно!');
-                    /*this.setState({info : <Redirect to="/" />});*/
+                    window.history.back();
                 } else {
                     this.setState({info : <div id="info" className="error">Неверный логин и / или пароль.</div>})
                 }
@@ -29,16 +28,19 @@ export class Auth extends React.Component{
 
     render(){
         return (
-            <div className="container">
-                <h1 className="text-center">Авторизация</h1>
-                {this.state.info}
-                <form id="authForm" onSubmit={this.handlerSubmit}>
-                    <input type="text" name="email" className="form-control my-3" placeholder="E-mail" required />
-                        <input type="password" name="pass" className="form-control my-3" placeholder="Пароль" required />
-                            <input type="submit" name="auth_submit" className="form-control btn btn-primary my-3"
-                                   value="Вход" />
-                </form>
-            </div>
+            <>
+                <Header />
+                <div className="container">
+                    <h1 className="text-center">Авторизация</h1>
+                    {this.state.info}
+                    <form id="authForm" onSubmit={this.handlerSubmit}>
+                        <input type="text" name="email" className="form-control my-3" placeholder="E-mail" required />
+                            <input type="password" name="pass" className="form-control my-3" placeholder="Пароль" required />
+                                <input type="submit" name="auth_submit" className="form-control btn btn-primary my-3"
+                                       value="Вход" />
+                    </form>
+                </div>
+            </>
         );
     }
 }

@@ -160,6 +160,7 @@ export class Albums extends React.Component{
     render(){
         return (
             <>
+                <Header />
                 <div className="container images">
                     <h2>
                         Альбомы

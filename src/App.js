@@ -15,7 +15,7 @@ import {Logout} from "./components/Logout";
 function App() {
   return (
       <BrowserRouter>
-          <Header />
+          {/*<Header />*/}
           <Route path="/" exact render={() => <Albums />}/>
           <Route path="/edit_album/:id" component={EditAlbum}/>
           <Route path="/album/:id" component={Images}/>

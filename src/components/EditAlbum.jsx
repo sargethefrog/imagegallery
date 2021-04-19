@@ -1,4 +1,5 @@
 import React from 'react';
+import {Header} from "./Header";
 
 export class EditAlbum extends React.Component{
     constructor() {
@@ -47,20 +48,23 @@ export class EditAlbum extends React.Component{
     }
     render(){
         return (
-            <div className="container">
-                <h1 className="text-center">Редактирование</h1>
-                {this.state.info}
-                <form id="edit_album_form" onSubmit={this.handlerSubmit}>
-                    <input type="hidden" name="album_id" value="" />
-                        <input type="text" name="title" className="form-control my-3" placeholder="Название" required
-                                value={this.state.title} onChange={this.handlerInput}/>
-                            <textarea name="description" placeholder="Описание" className="form-control"
-                                      required value={this.state.description} onChange={this.handlerInput}>
-                            </textarea>
-                            <input type="submit" name="add_album_submit" className="form-control btn btn-primary my-3"
-                                   value="Сохранить" />
-                </form>
-            </div>
+            <>
+                <Header />
+                <div className="container">
+                    <h1 className="text-center">Редактирование</h1>
+                    {this.state.info}
+                    <form id="edit_album_form" onSubmit={this.handlerSubmit}>
+                        <input type="hidden" name="album_id" value="" />
+                            <input type="text" name="title" className="form-control my-3" placeholder="Название" required
+                                    value={this.state.title} onChange={this.handlerInput}/>
+                                <textarea name="description" placeholder="Описание" className="form-control"
+                                          required value={this.state.description} onChange={this.handlerInput}>
+                                </textarea>
+                                <input type="submit" name="add_album_submit" className="form-control btn btn-primary my-3"
+                                       value="Сохранить" />
+                    </form>
+                </div>
+            </>
         );
     }
 }

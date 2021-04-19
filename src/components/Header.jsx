@@ -115,7 +115,7 @@ export class Header extends React.Component{
                 <div className="row">
                     <div id="logo" className="col-md-8 mb-3">
                         <Link to="/">
-                            <img src="img/logo.png" />
+                            <img src="/img/logo.png" />
                             <span>Галерея изображений</span>
                         </Link>
                     </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
+import {Header} from "./Header";
 
 export class Reg extends React.Component{
 
@@ -27,18 +28,21 @@ export class Reg extends React.Component{
 
     render(){
         return (
-            <div className="container">
-                <h1 className="text-center">Регистрация</h1>
-                {this.state.info}
-                <form id="regForm" onSubmit={this.handlerSubmit}>
-                    <input type="text" name="name" className="form-control my-3" placeholder="Имя" required />
-                        <input type="text" name="email" className="form-control my-3" placeholder="E-mail" required />
-                            <input type="password" name="pass" className="form-control my-3" placeholder="Пароль"
-                                   required />
-                                <input type="submit" name="reg_submit" className="form-control btn btn-primary my-3"
-                                       value="Зарегистрироваться" />
-                </form>
-            </div>
+            <>
+                <Header />
+                <div className="container">
+                    <h1 className="text-center">Регистрация</h1>
+                    {this.state.info}
+                    <form id="regForm" onSubmit={this.handlerSubmit}>
+                        <input type="text" name="name" className="form-control my-3" placeholder="Имя" required />
+                            <input type="text" name="email" className="form-control my-3" placeholder="E-mail" required />
+                                <input type="password" name="pass" className="form-control my-3" placeholder="Пароль"
+                                       required />
+                                    <input type="submit" name="reg_submit" className="form-control btn btn-primary my-3"
+                                           value="Зарегистрироваться" />
+                    </form>
+                </div>
+            </>
         );
     }
 }

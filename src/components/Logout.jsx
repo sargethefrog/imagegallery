@@ -1,5 +1,4 @@
 import React from 'react';
-import {Redirect} from "react-router-dom";
 
 export class Logout extends React.Component{
 
@@ -14,22 +13,11 @@ export class Logout extends React.Component{
         })
             .then(response => response.json())
             .then(result => {
-                console.log('LOGOUT : ', result);
-                if(result.result === 'success'){
-                    this.setState({loggedOut : true});
-                } else {
-                    this.setState({loggedOut : false});
-                }
+                window.history.back();
 
             });
     }
     render(){
-        if(this.state.loggedOut){
-            return (
-                <Redirect to="/" />
-            );
-        }
-        //return null;
-        return <p>Ошибка выхода с сайта.</p>;
+        return null;
     }
 }

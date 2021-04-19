@@ -2,6 +2,7 @@ import React from 'react';
 import {Redirect} from "react-router-dom";
 import * as StackBlur from "stackblur-canvas";
 import vintagejs from "vintagejs";
+import {Header} from "./Header";
 
 export class AddImage extends React.Component{
 
@@ -189,41 +190,44 @@ export class AddImage extends React.Component{
     }
     render(){
         return (
-            <div className="container">
-                <h1 className="text-center">Добавить изображение</h1>
-                {this.state.info}
-                <form id="add_image_form" onSubmit={this.handlerSubmit}>
-                        <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" />
-                            <textarea name="description" placeholder="Описание"
-                                      className="form-control my-3"></textarea>
-                            <input type="file" name="imagefile" className="form-control my-3" ref="image_file" onChange={this.handlerFileChange}/>
-                                <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
-                                    <div id="upload_icon_wrapper">
-                                        <i className="fas fa-file-upload"></i>
+            <>
+                <Header />
+                <div className="container">
+                    <h1 className="text-center">Добавить изображение</h1>
+                    {this.state.info}
+                    <form id="add_image_form" onSubmit={this.handlerSubmit}>
+                            <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" />
+                                <textarea name="description" placeholder="Описание"
+                                          className="form-control my-3"></textarea>
+                                <input type="file" name="imagefile" className="form-control my-3" ref="image_file" onChange={this.handlerFileChange}/>
+                                    <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
+                                        <div id="upload_icon_wrapper">
+                                            <i className="fas fa-file-upload"></i>
 
+                                        </div>
+                                        <button id="selectFile" type="button" onClick={this.handlerSelectFile}>Обзор...</button>
                                     </div>
-                                    <button id="selectFile" type="button" onClick={this.handlerSelectFile}>Обзор...</button>
-                                </div>
-                                <div id="file_canvas_wrapper">
-                                    <canvas id="file_canvas" hidden ref="file_canvas"></canvas>
-                                </div>
-                                <div id="controls" className="my-2">
-                                    Яркость :
-                                    <input id="brightnessRange" type="range" min="-10" max="10" value={this.state.brightnessValue} onChange={this.handlerControlsChange} ref="brightnessRange" name="brightnessValue" />
-                                    <br />
-                                    Контраст :
-                                    <input id="contrastRange" type="range" min="-10" max="10" value={this.state.contrastValue} onChange={this.handlerControlsChange} ref="contrastRange" name="contrastValue" />
-                                    <br />
-                                    Насыщенность :
-                                    <input id="saturationRange" type="range" min="0" max="10" value={this.state.saturationValue} onChange={this.handlerControlsChange} ref="saturationRange" name="saturationValue" />
-                                    <br />
-                                    Размытие :
-                                    <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerControlsChange} ref="blurRange" name="blurValue" />
-                                </div>
-                                <input type="submit" name="add_image_submit"
-                                       className="form-control btn btn-primary my-3" value="Добавить изображение" />
-                </form>
-            </div>
+                                    <div id="file_canvas_wrapper">
+                                        <canvas id="file_canvas" hidden ref="file_canvas"></canvas>
+                                    </div>
+                                    <div id="controls" className="my-2">
+                                        Яркость :
+                                        <input id="brightnessRange" type="range" min="-10" max="10" value={this.state.brightnessValue} onChange={this.handlerControlsChange} ref="brightnessRange" name="brightnessValue" />
+                                        <br />
+                                        Контраст :
+                                        <input id="contrastRange" type="range" min="-10" max="10" value={this.state.contrastValue} onChange={this.handlerControlsChange} ref="contrastRange" name="contrastValue" />
+                                        <br />
+                                        Насыщенность :
+                                        <input id="saturationRange" type="range" min="0" max="10" value={this.state.saturationValue} onChange={this.handlerControlsChange} ref="saturationRange" name="saturationValue" />
+                                        <br />
+                                        Размытие :
+                                        <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerControlsChange} ref="blurRange" name="blurValue" />
+                                    </div>
+                                    <input type="submit" name="add_image_submit"
+                                           className="form-control btn btn-primary my-3" value="Добавить изображение" />
+                    </form>
+                </div>
+            </>
         );
 
     }

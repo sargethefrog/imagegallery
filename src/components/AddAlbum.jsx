@@ -1,5 +1,6 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
+import {Header} from "./Header";
 
 export class AddAlbum extends React.Component{
 
@@ -20,17 +21,21 @@ export class AddAlbum extends React.Component{
                 } else {
                     this.setState({
                         userId : result.id,
-                        content : <div className="container">
-                                    <h1 className="text-center">Новый альбом</h1>
-                                    {this.state.info}
-                                    <form id="add_album_form" onSubmit={this.handlerSubmit}>
-                                        <input type="text" name="title" className="form-control my-3" placeholder="Название" required />
-                                        <textarea name="description" placeholder="Описание" className="form-control"
-                                                  required></textarea>
-                                        <input type="submit" name="add_album_submit" className="form-control btn btn-primary my-3"
-                                               value="Добавить альбом" />
-                                    </form>
-                                </div>
+                        content :
+                                <>
+                                    <Header />
+                                    <div className="container">
+                                            <h1 className="text-center">Новый альбом</h1>
+                                            {this.state.info}
+                                            <form id="add_album_form" onSubmit={this.handlerSubmit}>
+                                                <input type="text" name="title" className="form-control my-3" placeholder="Название" required />
+                                                <textarea name="description" placeholder="Описание" className="form-control"
+                                                          required></textarea>
+                                                <input type="submit" name="add_album_submit" className="form-control btn btn-primary my-3"
+                                                       value="Добавить альбом" />
+                                            </form>
+                                    </div>
+                                </>
                     });
                 }
 

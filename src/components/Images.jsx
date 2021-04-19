@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {Header} from "./Header";
 
 function SingleImage(props){
     return (
@@ -80,22 +81,25 @@ export class Images extends React.Component{
     }
     render(){
         return (
-            <div className="container images">
-                <h1 className="text-center">
-                    {this.state.albumTitle}
-                    {this.state.addImageBtn}
-                </h1>
-                <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
-                </p>
-                <p className="album-creationdate my-3"><i className="fas fa-clock ms-1 me-2"></i>Время создания
-                    : <b>{this.state.creationDate}</b></p>
-                <p className="album-description my-3">
-                    {this.state.albumDescription}
-                </p>
-                <div className="row">
-                    {this.state.images}
+            <>
+                <Header />
+                <div className="container images">
+                    <h1 className="text-center">
+                        {this.state.albumTitle}
+                        {this.state.addImageBtn}
+                    </h1>
+                    <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
+                    </p>
+                    <p className="album-creationdate my-3"><i className="fas fa-clock ms-1 me-2"></i>Время создания
+                        : <b>{this.state.creationDate}</b></p>
+                    <p className="album-description my-3">
+                        {this.state.albumDescription}
+                    </p>
+                    <div className="row">
+                        {this.state.images}
+                    </div>
                 </div>
-            </div>
+            </>
         );
     }
 }
