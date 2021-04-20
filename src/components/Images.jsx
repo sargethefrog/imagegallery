@@ -58,10 +58,14 @@ export class Images extends React.Component{
                         if(result !== 'error' && result.id === this.state.userId){
                             this.setState({
                                 addImageBtn : <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
-                                                    className="add_image_btn">+</Link>
+                                                    className="add_image_btn">+</Link>,
+                                editAlbumLink : <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
+                                                      title="Редактировать название и описание">
+                                    <i className="fas fa-pen-alt mx-2"></i>
+                                </Link>
                             });
                         } else {
-                            this.setState({addImageBtn : ''});
+                            this.setState({addImageBtn : '',editAlbumLink : ''});
                         }
                     });
             });
@@ -73,6 +77,7 @@ export class Images extends React.Component{
                 <div className="container images">
                     <h1 className="text-center">
                         {this.state.albumTitle}
+                        {this.state.editAlbumLink}
                         {this.state.addImageBtn}
                     </h1>
                     <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
