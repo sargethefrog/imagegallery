@@ -1,21 +1,7 @@
 import React from 'react';
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
-
-function SingleImageOld(props){
-    return (
-        <div className="col-md-4 my-3">
-            <figure>
-                <img src={host + '/uploads/' + props.filename} alt={props.title}/>
-                <figcaption>{props.title}</figcaption>
-                <div className="image_description">{props.description}</div>
-                <div className="image_datetime"><i className="fas fa-clock ms-1 me-2"></i>Добавлено
-                    : {props.datetime}</div>
-            </figure>
-        </div>
-    );
-}
 
 class SingleImage extends React.Component{
 
@@ -26,7 +12,6 @@ class SingleImage extends React.Component{
     }
 
     deleteImage(){
-        /*alert('Удаление изображения с id = ' + this.props.id);*/
         const formData = new FormData();
         formData.append('id',this.props.id);
         fetch(host + '/php/handlerDeleteImage.php',{
@@ -35,9 +20,10 @@ class SingleImage extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
-                    alert('Изображение было удалено!');
-                    this.setState({
-                        redirect : <Redirect to={"/album/" + this.props.album} />
+                    let images = this.props.parent.state.images;
+                    images.splice(this.props.index,1);
+                    this.props.parent.setState({
+                        images : images
                     });
                 } else {
                     alert('Ошибка удаления изображения!');
@@ -59,7 +45,6 @@ class SingleImage extends React.Component{
     render(){
         return (
             <div className="col-md-4 my-3">
-                {this.state.redirect}
                 <figure>
                     <img src={host + '/uploads/' + this.props.filename} alt={this.props.title}/>
                     <figcaption>{this.props.title}</figcaption>
@@ -99,16 +84,6 @@ export class Images extends React.Component{
                     userId : result.userId
                 });
                 this.result = result;
-                /*let images = [];
-                result.images.forEach(img => {
-                    images.push(<SingleImage
-                        filename={img.filename}
-                        title={img.title}
-                        description={img.description}
-                        datetime={img.datetime}
-                    />);
-                });
-                this.setState({images : images});*/
                 fetch(host + '/php/getUser.php',{
                     credentials : "include"
                 }).then(response => response.json())
@@ -128,7 +103,7 @@ export class Images extends React.Component{
                             this.setState({addImageBtn : '',editAlbumLink : ''});
                         }
                         let images = [];
-                        this.result.images.forEach(img => {
+                        this.result.images.forEach((img,i) => {
                             images.push(<SingleImage
                                 filename={img.filename}
                                 title={img.title}
@@ -137,28 +112,13 @@ export class Images extends React.Component{
                                 edit={edit}
                                 id={img.id}
                                 album={this.state.albumId}
+                                index={i}
+                                parent={this}
                             />);
                         });
                         this.setState({images : images});
                     });
             });
-        /*fetch(host + '/php/getUser.php',{
-            credentials : "include"
-        }).then(response => response.json())
-            .then(result => {
-                if(result !== 'error' && result.id === this.state.userId){
-                    this.setState({
-                        addImageBtn : <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
-                                            className="add_image_btn">+</Link>,
-                        editAlbumLink : <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
-                                              title="Редактировать название и описание">
-                            <i className="fas fa-pen-alt mx-2"></i>
-                        </Link>
-                    });
-                } else {
-                    this.setState({addImageBtn : '',editAlbumLink : ''});
-                }
-            });*/
     }
     render(){
         return (

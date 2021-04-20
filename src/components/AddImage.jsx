@@ -19,6 +19,7 @@ export class AddImage extends React.Component{
         this.handlerControlsChange = this.handlerControlsChange.bind(this);
         this.handlerSelectFile = this.handlerSelectFile.bind(this);
         this.handlerFileChange = this.handlerFileChange.bind(this);
+        this.handlerInput = this.handlerInput.bind(this);
         this.bufferCanvas = document.createElement('canvas');
     }
 
@@ -199,9 +200,9 @@ export class AddImage extends React.Component{
                     <h1 className="text-center">Добавить изображение</h1>
                     {this.state.info}
                     <form id="add_image_form" onSubmit={this.handlerSubmit}>
-                            <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" />
+                            <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" onChange={this.handlerInput} />
                                 <textarea name="description" placeholder="Описание"
-                                          className="form-control my-3"></textarea>
+                                          className="form-control my-3" onChange={this.handlerInput}></textarea>
                                 <input type="file" name="imagefile" className="form-control my-3" ref="image_file" onChange={this.handlerFileChange}/>
                                     <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
                                         <div id="upload_icon_wrapper">
