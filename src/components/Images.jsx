@@ -93,6 +93,19 @@ export class Images extends React.Component{
         this.state = {
             images : []
         };
+        this.deleteAlbum = this.deleteAlbum.bind(this);
+    }
+
+    deleteAlbum(){
+        const formData = new FormData();
+        formData.append('id',this.state.albumId);
+        fetch(host + '/php/handlerDeleteAlbum.php',{
+            method : 'POST',
+            body : formData
+        }).then(response => response.json())
+            .then(result => {
+                console.log('DELETE ALBUM : ',result);
+            });
     }
     componentDidMount(){
         const formData = new FormData();
@@ -125,7 +138,8 @@ export class Images extends React.Component{
                                 editAlbumLink : <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
                                                       title="Редактировать название и описание">
                                     <i className="fas fa-pen-alt mx-2"></i>
-                                </Link>
+                                </Link>,
+                                deleteAlbumBtn : <button type="button" className="delete_album_btn" title="Удалить альбом" onClick={this.deleteAlbum}>-</button>
                             });
                         } else {
                             this.setState({addImageBtn : '',editAlbumLink : ''});
@@ -157,6 +171,7 @@ export class Images extends React.Component{
                         {this.state.albumTitle}
                         {this.state.editAlbumLink}
                         {this.state.addImageBtn}
+                        {this.state.deleteAlbumBtn}
                     </h1>
                     <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
                     </p>

@@ -165,8 +165,7 @@ header{
     transition: .3s;
     text-decoration: none;
     text-align: center;
-    line-height: 26px;
-    line-height: 2.5rem;
+    line-height: 2.8rem;
     font-weight: bold;
     color: black;
     margin-left: 10px;
@@ -176,7 +175,30 @@ header{
     transform:rotateZ(360deg);
     background-color: #ACE648;
 }
-
+.delete_album_btn{
+    width: 50px;
+    height: 50px;
+    background-color: #CC5E40;
+    border-radius: 50%;
+    display: inline-block;
+    font-size: 30px;
+    box-shadow: 0 0 2px rgba(0,0,0,.75);
+    -webkit-transition: .3s;
+    -moz-transition: .3s;
+    -ms-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    text-align: center;
+    line-height: 26px;
+    line-height: 2.5rem;
+    font-weight: bold;
+    color: black;
+    margin-left: 10px;
+    border: none;
+}
+.delete_album_btn:hover{
+    background-color: #f1594e;
+}
 .images > div > div:hover > .add_image_btn{
     opacity: 1;
 }
