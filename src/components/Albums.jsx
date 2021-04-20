@@ -89,7 +89,7 @@ class Album extends React.Component{
                     <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + this.props.filename} alt={this.props.title} />
                 </div>
             );
-        } else {
+        } else if(this.props.edit){
             return (
                 <div className="col-md-4 my-3 no_images">
                     <h3 className="text-center my-1">
@@ -105,6 +105,8 @@ class Album extends React.Component{
                     </p>
                 </div>
             );
+        } else {
+            return null;
         }
     }
 }
