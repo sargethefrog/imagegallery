@@ -1,5 +1,6 @@
 import React from 'react';
 import {Header} from "./Header";
+import {host} from "../config";
 
 export class Auth extends React.Component{
 
@@ -12,7 +13,7 @@ export class Auth extends React.Component{
     handlerSubmit(e){
         e.preventDefault();
         const formData = new FormData(e.target);
-        fetch('http://y91756wn.beget.tech/imagegallery/php/handlerAuth.php',{
+        fetch(host + '/php/handlerAuth.php',{
             method : 'POST',
             body : formData,
             credentials : "include"

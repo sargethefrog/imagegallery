@@ -1,4 +1,5 @@
 import React from 'react';
+import {host} from "../config";
 
 export class Logout extends React.Component{
 
@@ -8,7 +9,7 @@ export class Logout extends React.Component{
     }
 
     componentDidMount(){
-        fetch('http://y91756wn.beget.tech/imagegallery/php/handlerLogout.php',{
+        fetch(host + '/php/handlerLogout.php',{
             credentials : "include"
         })
             .then(response => response.json())

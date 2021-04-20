@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import {Header} from './components/Header.jsx';
 import {Albums} from './components/Albums.jsx';
 import {Images} from "./components/Images";
 import {BrowserRouter,Route} from "react-router-dom";
@@ -15,7 +13,6 @@ import {Logout} from "./components/Logout";
 function App() {
   return (
       <BrowserRouter>
-          {/*<Header />*/}
           <Route path="/" exact render={() => <Albums />}/>
           <Route path="/edit_album/:id" component={EditAlbum}/>
           <Route path="/album/:id" component={Images}/>
@@ -24,9 +21,6 @@ function App() {
           <Route path="/reg" render={() => <Reg />} />
           <Route path="/auth" render={() => <Auth />} />
           <Route path="/logout" render={() => <Logout />} />
-          {/*<Albums />*/}
-          {/*<Images albumid="1" />*/}
-          {/*<Images albumid="2" />*/}
           <Footer />
       </BrowserRouter>
   );

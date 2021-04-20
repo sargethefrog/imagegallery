@@ -1,5 +1,6 @@
 import React from 'react';
 import {Header} from "./Header";
+import {host} from "../config";
 
 export class EditAlbum extends React.Component{
     constructor() {
@@ -17,7 +18,7 @@ export class EditAlbum extends React.Component{
         console.log(this);
         const formData = new FormData();
         formData.append('id',this.props.match.params.id);
-        fetch('http://y91756wn.beget.tech/imagegallery/php/getAlbum.php',{
+        fetch(host + '/php/getAlbum.php',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
@@ -34,7 +35,7 @@ export class EditAlbum extends React.Component{
         e.preventDefault();
         const formData = new FormData(e.target);
         formData.append('album_id',this.props.match.params.id);
-        fetch('http://y91756wn.beget.tech/imagegallery/php/handlerEditAlbum.php',{
+        fetch(host + '/php/handlerEditAlbum.php',{
             method : 'POST',
             body : formData
         }).then(response => response.json())

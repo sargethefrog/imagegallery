@@ -3,6 +3,7 @@ import {Redirect} from "react-router-dom";
 import * as StackBlur from "stackblur-canvas";
 import vintagejs from "vintagejs";
 import {Header} from "./Header";
+import {host} from "../config";
 
 export class AddImage extends React.Component{
 
@@ -22,11 +23,13 @@ export class AddImage extends React.Component{
     }
 
     componentDidMount(){
-        this.setState({blurValue : 0});
-        this.setState({brightnessValue : 0});
-        this.setState({contrastValue : 0});
-        this.setState({saturationValue : 10});
-        this.setState({fileAdded : false});
+        this.setState({
+            blurValue : 0,
+            brightnessValue : 0,
+            contrastValue : 0,
+            saturationValue : 10,
+            fileAdded : false
+        });
     }
 
     handlerInput(e){
@@ -47,7 +50,7 @@ export class AddImage extends React.Component{
             formData.append('title',this.state.title);
             formData.append('description',this.state.description);
             formData.append('data',fileContent);
-            fetch('http://y91756wn.beget.tech/imagegallery/php/uploadImage.php',{
+            fetch(host + '/php/uploadImage.php',{
                 method : 'POST',
                 body : formData
             }).then(response => response.json())

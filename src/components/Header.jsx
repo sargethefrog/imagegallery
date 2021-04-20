@@ -1,29 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {host} from "../config";
 
-/*function AuthPanel(props){
-    if(props.loggedIn) return (
-        <div className="reg_and_auth col-md-4">
-            <span className="mx-2">
-            <i className="fas fa-user"></i>{props.user}
-        </span>
-            <Link to="/logout" className="btn">
-                <i className="fa fa-sign-out-alt" aria-hidden="true"></i>
-                Выход
-            </Link>
-        </div>
-    ); else return (
-        <div className="reg_and_auth col-md-4">
-            <Link to="/reg" className="btn ms-2">
-                <i className="fa fa-address-book" aria-hidden="true"></i>
-                <span className="visible-md">Регистрация</span></Link>
-            <Link to="/auth" className="btn">
-                <i className="fa fa-sign-in-alt" aria-hidden="true"></i>
-                Вход
-            </Link>
-        </div>
-    );
-}*/
 
 class AuthPanel extends React.Component{
 
@@ -32,7 +10,7 @@ class AuthPanel extends React.Component{
         this.state = {};
     }
     componentDidMount(){
-        fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php',{
+        fetch(host + '/php/getUser.php',{
             credentials : 'include'
         }).then(response => response.json())
             .then(result => {
@@ -84,7 +62,7 @@ export class Header extends React.Component{
     }
 
     componentDidMount(){
-        fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php')
+        fetch(host + '/php/getUser.php')
             .then(response => response.json())
             .then(result => {
                 if(result.result != 'error'){
@@ -100,7 +78,7 @@ export class Header extends React.Component{
     }
 
     logout(){
-        fetch('http://y91756wn.beget.tech/imagegallery/php/handlerLogout.php')
+        fetch(host + '/php/handlerLogout.php')
             .then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
@@ -119,7 +97,6 @@ export class Header extends React.Component{
                             <span>Галерея изображений</span>
                         </Link>
                     </div>
-                    {/*<AuthPanel loggedIn={this.state.loggedIn} user={this.state.name}/>*/}
                     <AuthPanel />
                 </div>
             </header>

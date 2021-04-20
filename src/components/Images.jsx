@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Header} from "./Header";
+import {host} from "../config";
 
 function SingleImage(props){
     return (
         <div className="col-md-4 my-3">
             <figure>
-                <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + props.filename} alt={props.title}/>
+                <img src={host + '/uploads/' + props.filename} alt={props.title}/>
                 <figcaption>{props.title}</figcaption>
                 <div className="image_description">{props.description}</div>
                 <div className="image_datetime"><i className="fas fa-clock ms-1 me-2"></i>Добавлено
@@ -26,7 +27,7 @@ export class Images extends React.Component{
     componentDidMount(){
         const formData = new FormData();
         formData.append('album_id',this.props.match.params.id);
-        fetch('http://y91756wn.beget.tech/imagegallery/php/getImages.php',{
+        fetch(host + '/php/getImages.php',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
@@ -50,7 +51,7 @@ export class Images extends React.Component{
                     />);
                 });
                 this.setState({images : images});
-                fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php',{
+                fetch(host + '/php/getUser.php',{
                     credentials : "include"
                 }).then(response => response.json())
                     .then(result => {
@@ -64,20 +65,6 @@ export class Images extends React.Component{
                         }
                     });
             });
-        /*fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php',{
-            credentials : "include"
-        }).then(response => response.json())
-            .then(result => {
-                alert(`loggedUserId : ${result.id}\nalbumAuthorId : ${this.state.userId}`);
-                if(result !== 'error' && result.id === this.state.userId){
-                    this.setState({
-                        addImageBtn : <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
-                                            className="add_image_btn">+</Link>
-                    });
-                } else {
-                    this.setState({addImageBtn : ''});
-                }
-            });*/
     }
     render(){
         return (

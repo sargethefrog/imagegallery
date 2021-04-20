@@ -1,52 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Header} from "./Header";
-
-function Album_old(props){
-    if(props.count != 0){
-        return (
-            <div className="col-md-4 my-3">
-                <div className="album_info">
-                    <h3 className="text-center my-1">
-                        <Link to={'/album/' + props.id}>{props.title}</Link>
-                        <Link to={'/edit_album/' + props.id} className="edit_album"
-                              title="Редактировать название и описание">
-                            <i className="fas fa-pen-alt mx-2"></i>
-                        </Link>
-                    </h3>
-                    <p className="totally_images px-1">Всего изображений : {props.count}</p>
-                    <p className="description px-1">
-                        {props.description}
-                    </p>
-                </div>
-                <Link to={'/add_image/' + props.id} title="Добавить изображение"
-                   className="add_image_btn">+</Link>
-                <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + props.filename} alt={props.title} />
-            </div>
-        );
-    } else {
-        return (
-            <div className="col-md-4 my-3 no_images">
-                <h3 className="text-center my-1">
-                    {props.title}
-                    <Link to={'/edit_album/' + props.id} className="edit_album"
-                          title="Редактировать название и описание">
-                        <i className="fas fa-pen-alt mx-2"></i>
-                    </Link>
-                </h3>
-                <p>В этом альбоме пока нет изображений.
-                    <Link to={'/add_image/' + props.id} className="add_image_link">
-                        Добавить
-                    </Link>
-                </p>
-                <p className="description px-1">
-                    {props.description}
-                </p>
-            </div>
-        );
-    }
-
-}
+import {host} from "../config";
 
 class Album extends React.Component{
 
@@ -86,7 +41,7 @@ class Album extends React.Component{
                         </p>
                     </div>
                     {this.state.addImageBtn}
-                    <img src={'http://y91756wn.beget.tech/imagegallery/uploads/' + this.props.filename} alt={this.props.title} />
+                    <img src={host + '/uploads/' + this.props.filename} alt={this.props.title} />
                 </div>
             );
         } else if(this.props.edit){
@@ -121,7 +76,7 @@ export class Albums extends React.Component{
     }
     componentDidMount(){
         let albums = [];
-        fetch('http://y91756wn.beget.tech/imagegallery/php/getUser.php',{
+        fetch(host + '/php/getUser.php',{
             credentials : "include"
         }).then(response => response.json())
             .then(result => {
@@ -135,7 +90,7 @@ export class Albums extends React.Component{
                         addAlbumLink : <Link to="/add_album" className="add_album_btn" title="Добавить альбом">+</Link>
                     });
                 }
-                fetch('http://y91756wn.beget.tech/imagegallery/php/getAlbums.php')
+                fetch(host + '/php/getAlbums.php')
                     .then(response => response.json())
                     .then(result => {
                         result.forEach((album) => {
@@ -166,7 +121,6 @@ export class Albums extends React.Component{
                 <div className="container images">
                     <h2>
                         Альбомы
-                        {/*<Link to="/add_album" className="add_album_btn" title="Добавить альбом">+</Link>*/}
                         {this.state.addAlbumLink}
                     </h2>
                     <div className="row">

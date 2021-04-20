@@ -1,6 +1,7 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
 import {Header} from "./Header";
+import {host} from "../config";
 
 export class Reg extends React.Component{
 
@@ -13,7 +14,7 @@ export class Reg extends React.Component{
     handlerSubmit(e){
         e.preventDefault();
         const formData = new FormData(e.target);
-        fetch('http://y91756wn.beget.tech/imagegallery/php/handlerReg.php',{
+        fetch(host + '/php/handlerReg.php',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
