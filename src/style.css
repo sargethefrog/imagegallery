@@ -218,6 +218,15 @@ h3 .edit_album:hover i{
 .no_images .edit_album{
     opacity: 1;
 }
+.edit_image_link{
+    color: #4C681C;
+}
+.edit_image_link:hover{
+    color: #99CC40;
+}
+.edit_image_link:hover i{
+    transform: rotateZ(-20deg);
+}
 #info{
     padding: 10px;
     margin-top: 10px;
