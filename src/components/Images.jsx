@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
 
@@ -22,12 +22,34 @@ class SingleImage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {};
+        this.deleteImage = this.deleteImage.bind(this);
+    }
+
+    deleteImage(){
+        /*alert('Удаление изображения с id = ' + this.props.id);*/
+        const formData = new FormData();
+        formData.append('id',this.props.id);
+        fetch(host + '/php/handlerDeleteImage.php',{
+            method : 'POST',
+            body : formData
+        }).then(response => response.json())
+            .then(result => {
+                if(result.result === 'success'){
+                    alert('Изображение было удалено!');
+                    this.setState({
+                        redirect : <Redirect to={"/album/" + this.props.album} />
+                    });
+                } else {
+                    alert('Ошибка удаления изображения!');
+                }
+            });
     }
 
     componentDidMount(){
         if(this.props.edit){
             this.setState({
-                edit : <p><Link to={"/edit_image/" + this.props.id} className="edit_image_link"><i className="fas fa-pen-alt mx-2"></i>Редактировать название и описание</Link></p>
+                edit : <p><Link to={"/edit_image/" + this.props.id} className="edit_image_link"><i className="fas fa-pen-alt mx-2"></i>Редактировать название и описание</Link>
+                <button type="button" className="delete_image_btn" title="Удалить изображение" onClick={this.deleteImage}>-</button></p>
             });
         } else {
             this.setState({edit : ''});
@@ -37,6 +59,7 @@ class SingleImage extends React.Component{
     render(){
         return (
             <div className="col-md-4 my-3">
+                {this.state.redirect}
                 <figure>
                     <img src={host + '/uploads/' + this.props.filename} alt={this.props.title}/>
                     <figcaption>{this.props.title}</figcaption>
@@ -44,6 +67,7 @@ class SingleImage extends React.Component{
                     {this.state.edit}
                     <div className="image_datetime"><i className="fas fa-clock ms-1 me-2"></i>Добавлено
                         : {this.props.datetime}</div>
+                    {this.state.delete}
                 </figure>
             </div>
         );
@@ -112,6 +136,7 @@ export class Images extends React.Component{
                                 datetime={img.datetime}
                                 edit={edit}
                                 id={img.id}
+                                album={this.state.albumId}
                             />);
                         });
                         this.setState({images : images});
