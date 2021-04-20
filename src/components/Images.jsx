@@ -9,6 +9,8 @@ class SingleImage extends React.Component{
         super(props);
         this.state = {};
         this.deleteImage = this.deleteImage.bind(this);
+        this.confirmDialog = this.confirmDialog.bind(this);
+        this.cancelDelete = this.cancelDelete.bind(this);
     }
 
     deleteImage(){
@@ -20,6 +22,9 @@ class SingleImage extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
+                    this.setState({
+                        confirmDialog : ''
+                    });
                     let images = this.props.parent.state.images;
                     images.splice(this.props.index,1);
                     this.props.parent.setState({
@@ -31,11 +36,33 @@ class SingleImage extends React.Component{
             });
     }
 
+    cancelDelete(){
+        this.setState({
+            confirmDialog : ''
+        })
+    }
+
+    confirmDialog(){
+        this.setState({
+            confirmDialog :
+                <>
+                    <div className="black_screen"></div>
+                    <div className="confirm_dialog">
+                        <p className="text-center title">Удалить изображение?</p>
+                        <div className="buttons">
+                            <button type="button" className="dialog_red_btn left_btn" onClick={this.deleteImage}>Да</button>
+                            <button type="button" className="dialog_green_btn right_btn" onClick={this.cancelDelete}>Отмена</button>
+                        </div>
+                    </div>
+                </>
+        });
+    }
+
     componentDidMount(){
         if(this.props.edit){
             this.setState({
                 edit : <p><Link to={"/edit_image/" + this.props.id} className="edit_image_link"><i className="fas fa-pen-alt mx-2"></i>Редактировать название и описание</Link>
-                <button type="button" className="delete_image_btn" title="Удалить изображение" onClick={this.deleteImage}>-</button></p>
+                <button type="button" className="delete_image_btn" title="Удалить изображение" onClick={this.confirmDialog}>-</button></p>
             });
         } else {
             this.setState({edit : ''});
@@ -45,6 +72,7 @@ class SingleImage extends React.Component{
     render(){
         return (
             <div className="col-md-4 my-3">
+                {this.state.confirmDialog}
                 <figure>
                     <img src={host + '/uploads/' + this.props.filename} alt={this.props.title}/>
                     <figcaption>{this.props.title}</figcaption>

@@ -309,6 +309,57 @@ h3 .edit_album:hover i{
 #upload_icon_wrapper i{
     margin: auto;
 }
+.black_screen{
+    background-color: rgba(0,0,0,.75);
+    position: fixed;
+    z-index: 999998;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+.confirm_dialog{
+    min-width: 400px;
+    min-height: 200px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform:translate(-50%,-50%);
+    z-index: 999999;
+    background-color: #fff;
+}
+.confirm_dialog button{
+    padding: 10px 20px;
+    min-width: 80px;
+    border: none;
+}
+.confirm_dialog .buttons{
+    margin-top: 80px;
+}
+.confirm_dialog .title{
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+.confirm_dialog .left_btn{
+    float: left;
+    margin-left: 20px;
+}
+.confirm_dialog .right_btn{
+    float: right;
+    margin-right: 20px;
+}
+.confirm_dialog .dialog_red_btn{
+    background-color: #CC5E40;
+}
+.confirm_dialog .dialog_red_btn:hover{
+    background-color:  #f1594e;
+}
+.confirm_dialog .dialog_green_btn{
+    background-color: #99cc41;
+}
+.confirm_dialog .dialog_green_btn:hover{
+    background-color:  #9DE71E;
+}
 .footer{
     background-color: #565656;
     color: white;
