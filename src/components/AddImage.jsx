@@ -133,8 +133,16 @@ export class AddImage extends React.Component{
         let contrast = this.refs.contrastRange.value / 10;
         let saturation = this.refs.saturationRange.value / 10;
         let blur = +this.refs.blurRange.value;
+        let sepia = this.refs.sepiaCheckbox.checked;
+        let gray = this.refs.grayscaleCheckbox.checked;
         console.log(blur);
         const effect = {brightness : brightness,contrast : contrast,saturation : saturation};
+        if(sepia){
+            effect.sepia = true;
+        }
+        if(gray){
+            effect.gray = true;
+        }
         console.log(effect);
         const srcElt = this.bufferCanvas;
         const ctx = this.refs.file_canvas.getContext('2d');
@@ -226,6 +234,10 @@ export class AddImage extends React.Component{
                                         <br />
                                         Размытие :
                                         <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerControlsChange} ref="blurRange" name="blurValue" />
+                                        <br />
+                                        <label><input id="sepiaCheckbox" type="checkbox" ref="sepiaCheckbox" onChange={this.handlerControlsChange} />Сепия</label>
+                                        <br />
+                                        <label><input id="grayscaleCheckbox" type="checkbox" ref="grayscaleCheckbox" onChange={this.handlerControlsChange} />Оттенки серого</label>
                                     </div>
                                     <input type="submit" name="add_image_submit"
                                            className="form-control btn btn-primary my-3" value="Добавить изображение" />

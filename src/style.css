@@ -390,6 +390,10 @@ h3 .edit_album:hover i{
 .confirm_dialog .dialog_green_btn:hover{
     background-color:  #9DE71E;
 }
+#controls input[type="checkbox"]{
+    display: inline-block;
+    margin-right: 6px;
+}
 .footer{
     background-color: #565656;
     color: white;
