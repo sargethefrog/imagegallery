@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
 
@@ -8,6 +8,57 @@ class Album extends React.Component{
     constructor(props) {
         super(props);
         this.state = {};
+        this.confirmDialog = this.confirmDialog.bind(this);
+        this.cancelDelete = this.cancelDelete.bind(this);
+        this.deleteAlbum = this.deleteAlbum.bind(this);
+    }
+
+    confirmDialog(){
+        this.setState({
+            confirmDialog :
+                <>
+                    <div className="black_screen"></div>
+                    <div className="confirm_dialog">
+                        <p className="text-center title">Удалить альбом?</p>
+                        <div className="buttons">
+                            <button type="button" className="dialog_red_btn left_btn" onClick={this.deleteAlbum}>Да</button>
+                            <button type="button" className="dialog_green_btn right_btn" onClick={this.cancelDelete}>Отмена</button>
+                        </div>
+                    </div>
+                </>
+        });
+    }
+
+    cancelDelete(){
+        this.setState({
+            confirmDialog : ''
+        })
+    }
+
+    deleteAlbum(){
+        const formData = new FormData();
+        formData.append('id',this.props.id);
+        fetch(host + '/php/handlerDeleteAlbum.php',{
+            method : 'POST',
+            body : formData
+        }).then(response => response.json())
+            .then(result => {
+                if(result.result === 'success'){
+                    this.setState({
+                        confirmDialog : ''
+                    });
+                    let albums = this.props.parent.state.albums;
+                    albums.splice(this.props.index,1);
+                    this.props.parent.setState({
+                        albums : albums
+                    })
+                } else {
+                    this.setState({
+                        confirmDialog : ''
+                    });
+                    alert('Ошибка удаления альбома!');
+                }
+            });
     }
 
     componentDidMount(){
@@ -21,7 +72,8 @@ class Album extends React.Component{
                 editAlbumLink : <Link to={'/edit_album/' + this.props.id} className="edit_album"
                                       title="Редактировать название и описание">
                     <i className="fas fa-pen-alt mx-2"></i>
-                </Link>
+                </Link>,
+                deleteAlbumBtn : <button type="button" className="delete_image_btn" title="Удалить альбом" onClick={this.confirmDialog}>-</button>
             });
         }
     }
@@ -30,10 +82,12 @@ class Album extends React.Component{
         if(this.props.count != 0){
             return (
                 <div className="col-md-4 my-3">
+                    {this.state.confirmDialog}
                     <div className="album_info">
                         <h3 className="text-center my-1">
                             <Link to={'/album/' + this.props.id}>{this.props.title}</Link>
                             {this.state.editAlbumLink}
+                            {this.state.deleteAlbumBtn}
                         </h3>
                         <p className="totally_images px-1">Всего изображений : {this.props.count}</p>
                         <p className="description px-1">
@@ -47,9 +101,11 @@ class Album extends React.Component{
         } else if(this.props.edit){
             return (
                 <div className="col-md-4 my-3 no_images">
+                    {this.state.confirmDialog}
                     <h3 className="text-center my-1">
                         {this.props.title}
                         {this.state.editAlbumLink}
+                        {this.state.deleteAlbumBtn}
                     </h3>
                     <p>
                         В этом альбоме пока нет изображений.
@@ -93,7 +149,7 @@ export class Albums extends React.Component{
                 fetch(host + '/php/getAlbums.php')
                     .then(response => response.json())
                     .then(result => {
-                        result.forEach((album) => {
+                        result.forEach((album,i) => {
                             console.log(album);
                             let canEditAlbum = false;
                             if(album.user_id === this.state.userId){
@@ -106,6 +162,8 @@ export class Albums extends React.Component{
                                 filename = {album.filename}
                                 id={album.id}
                                 edit={canEditAlbum}
+                                index={i}
+                                parent={this}
                             />);
                             console.log(this.state);
                         });

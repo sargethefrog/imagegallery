@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
 
@@ -31,6 +31,9 @@ class SingleImage extends React.Component{
                         images : images
                     });
                 } else {
+                    this.setState({
+                        confirmDialog : ''
+                    });
                     alert('Ошибка удаления изображения!');
                 }
             });
@@ -94,6 +97,30 @@ export class Images extends React.Component{
             images : []
         };
         this.deleteAlbum = this.deleteAlbum.bind(this);
+        this.confirmDialog = this.confirmDialog.bind(this);
+        this.cancelDelete = this.cancelDelete.bind(this);
+    }
+
+    cancelDelete(){
+        this.setState({
+            confirmDialog : ''
+        })
+    }
+
+    confirmDialog(){
+        this.setState({
+            confirmDialog :
+                <>
+                    <div className="black_screen"></div>
+                    <div className="confirm_dialog">
+                        <p className="text-center title">Удалить альбом?</p>
+                        <div className="buttons">
+                            <button type="button" className="dialog_red_btn left_btn" onClick={this.deleteAlbum}>Да</button>
+                            <button type="button" className="dialog_green_btn right_btn" onClick={this.cancelDelete}>Отмена</button>
+                        </div>
+                    </div>
+                </>
+        });
     }
 
     deleteAlbum(){
@@ -104,7 +131,17 @@ export class Images extends React.Component{
             body : formData
         }).then(response => response.json())
             .then(result => {
-                console.log('DELETE ALBUM : ',result);
+                if(result.result === 'success'){
+                    this.setState({
+                        confirmDialog : <Redirect to="/" />
+                    });
+
+                } else {
+                    this.setState({
+                        confirmDialog : ''
+                    });
+                    alert('Ошибка удаления альбома!');
+                }
             });
     }
     componentDidMount(){
@@ -139,7 +176,7 @@ export class Images extends React.Component{
                                                       title="Редактировать название и описание">
                                     <i className="fas fa-pen-alt mx-2"></i>
                                 </Link>,
-                                deleteAlbumBtn : <button type="button" className="delete_album_btn" title="Удалить альбом" onClick={this.deleteAlbum}>-</button>
+                                deleteAlbumBtn : <button type="button" className="delete_album_btn" title="Удалить альбом" onClick={this.confirmDialog}>-</button>
                             });
                         } else {
                             this.setState({addImageBtn : '',editAlbumLink : ''});
@@ -167,6 +204,7 @@ export class Images extends React.Component{
             <>
                 <Header />
                 <div className="container images">
+                    {this.state.confirmDialog}
                     <h1 className="text-center">
                         {this.state.albumTitle}
                         {this.state.editAlbumLink}
