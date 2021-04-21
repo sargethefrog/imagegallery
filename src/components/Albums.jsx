@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
+import Masonry from 'react-masonry-css';
 
 class Album extends React.Component{
 
@@ -81,7 +82,8 @@ class Album extends React.Component{
     render(){
         if(this.props.count != 0){
             return (
-                <div className="col-md-4 my-3">
+                /*<div className="col-md-4 my-3">*/
+                <div>
                     {this.state.confirmDialog}
                     <div className="album_info">
                         <h3 className="text-center my-1">
@@ -100,7 +102,8 @@ class Album extends React.Component{
             );
         } else if(this.props.edit){
             return (
-                <div className="col-md-4 my-3 no_images">
+                /*<div className="col-md-4 my-3 no_images">*/
+                <div className="no_images">
                     {this.state.confirmDialog}
                     <h3 className="text-center my-1">
                         {this.props.title}
@@ -173,6 +176,11 @@ export class Albums extends React.Component{
             });
     }
     render(){
+        const breakpointColumnsObj = {
+            default: 3,
+            1100: 2,
+            700: 1,
+        };
         return (
             <>
                 <Header />
@@ -182,7 +190,14 @@ export class Albums extends React.Component{
                         {this.state.addAlbumLink}
                     </h2>
                     <div className="row">
-                        {this.state.albums}
+                        {/*{this.state.albums}*/}
+                        <Masonry
+                            breakpointCols={breakpointColumnsObj}
+                            className="my-masonry-grid"
+                            columnClassName="my-masonry-grid_column">
+                            {/* array of JSX items */}
+                            {this.state.albums}
+                        </Masonry>
                     </div>
                 </div>
             </>

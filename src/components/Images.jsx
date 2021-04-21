@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
+import Masonry from 'react-masonry-css';
 
 class SingleImage extends React.Component{
 
@@ -74,11 +75,12 @@ class SingleImage extends React.Component{
 
     render(){
         return (
-            <div className="col-md-4 my-3">
+           /* <div className="col-md-4 my-3">*/
+            <div>
                 {this.state.confirmDialog}
                 <figure>
-                    <img src={host + '/uploads/' + this.props.filename} alt={this.props.title}/>
                     <figcaption>{this.props.title}</figcaption>
+                    <img src={host + '/uploads/' + this.props.filename} alt={this.props.title}/>
                     <div className="image_description">{this.props.description}</div>
                     {this.state.edit}
                     <div className="image_datetime"><i className="fas fa-clock ms-1 me-2"></i>Добавлено
@@ -200,6 +202,17 @@ export class Images extends React.Component{
             });
     }
     render(){
+        /*const breakpointColumnsObj = {
+            default: 4,
+            1100: 3,
+            700: 2,
+            500: 1
+        };*/
+        const breakpointColumnsObj = {
+            default: 3,
+            1100: 2,
+            700: 1,
+        };
         return (
             <>
                 <Header />
@@ -219,7 +232,14 @@ export class Images extends React.Component{
                         {this.state.albumDescription}
                     </p>
                     <div className="row">
-                        {this.state.images}
+                        {/*{this.state.images}*/}
+                        <Masonry
+                            breakpointCols={breakpointColumnsObj}
+                            className="my-masonry-grid"
+                            columnClassName="my-masonry-grid_column">
+                            {/* array of JSX items */}
+                            {this.state.images}
+                        </Masonry>
                     </div>
                 </div>
             </>
