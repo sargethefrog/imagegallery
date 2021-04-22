@@ -14,6 +14,7 @@ import {EditImage} from "./components/EditImage";
 function App() {
   return (
       <BrowserRouter>
+          <div id="main">
           <Route path="/" exact render={() => <Albums />}/>
           <Route path="/edit_album/:id" component={EditAlbum}/>
           <Route path="/album/:id" component={Images}/>
@@ -23,6 +24,7 @@ function App() {
           <Route path="/auth" render={() => <Auth />} />
           <Route path="/logout" render={() => <Logout />} />
           <Route path="/edit_image/:id" component={EditImage} />
+          </div>
           <Footer />
       </BrowserRouter>
   );

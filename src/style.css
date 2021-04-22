@@ -1,6 +1,14 @@
 body{
     font-size: 18px;
 }
+#main{
+    flex: auto;
+}
+#root{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 header{
     box-sizing:border-box;
     border-bottom:4px solid #030303;
@@ -397,6 +405,9 @@ h3 .edit_album:hover i{
 #controls input[type="checkbox"]{
     display: inline-block;
     margin-right: 6px;
+}
+#footer_wrapper{
+    flex-shrink: 0;
 }
 .footer{
     background-color: #565656;
