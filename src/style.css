@@ -63,6 +63,7 @@ header{
 .images img{
     width:100%;
     height:auto;
+    cursor: pointer;
 }
 .images > div > div > div > div{
     position: relative;

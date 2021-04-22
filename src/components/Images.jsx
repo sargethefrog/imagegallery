@@ -1,8 +1,37 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, Redirect} from "react-router-dom";
 import {Header} from "./Header";
 import {host} from "../config";
 import Masonry from 'react-masonry-css';
+import FsLightbox from 'fslightbox-react';
+
+let openSlide;
+
+function LightBox(props) {
+    const [lightboxController, setLightboxController] = useState({
+        toggler: false,
+        slide: 1
+    });
+
+    function openLightboxOnSlide(number) {
+        setLightboxController({
+            toggler: !lightboxController.toggler,
+            slide: number
+        });
+    }
+
+    openSlide = openLightboxOnSlide;
+
+    return (
+            <FsLightbox
+                toggler={lightboxController.toggler}
+                sources={props.sources}
+                type="image"
+                slide={lightboxController.slide}
+            />
+    );
+}
+
 
 class SingleImage extends React.Component{
 
@@ -12,6 +41,11 @@ class SingleImage extends React.Component{
         this.deleteImage = this.deleteImage.bind(this);
         this.confirmDialog = this.confirmDialog.bind(this);
         this.cancelDelete = this.cancelDelete.bind(this);
+        this.showImage = this.showImage.bind(this);
+    }
+
+    showImage(){
+        openSlide(this.props.index + 1);
     }
 
     deleteImage(){
@@ -80,7 +114,7 @@ class SingleImage extends React.Component{
                 {this.state.confirmDialog}
                 <figure>
                     <figcaption>{this.props.title}</figcaption>
-                    <img src={host + '/uploads/' + this.props.filename} alt={this.props.title}/>
+                    <img src={host + '/uploads/' + this.props.filename} alt={this.props.title} onClick={this.showImage}/>
                     <div className="image_description">{this.props.description}</div>
                     {this.state.edit}
                     <div className="image_datetime"><i className="fas fa-clock ms-1 me-2"></i>Добавлено
@@ -184,6 +218,7 @@ export class Images extends React.Component{
                             this.setState({addImageBtn : '',editAlbumLink : ''});
                         }
                         let images = [];
+                        let sources = [];
                         this.result.images.forEach((img,i) => {
                             images.push(<SingleImage
                                 filename={img.filename}
@@ -196,8 +231,9 @@ export class Images extends React.Component{
                                 index={i}
                                 parent={this}
                             />);
+                            sources.push(host + '/uploads/' + img.filename);
                         });
-                        this.setState({images : images});
+                        this.setState({images : images, sources : sources});
                     });
             });
     }
@@ -241,6 +277,7 @@ export class Images extends React.Component{
                             {this.state.images}
                         </Masonry>
                     </div>
+                    <LightBox sources={this.state.sources} />
                 </div>
             </>
         );
