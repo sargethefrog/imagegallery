@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {host} from "../config";
+import {SearchPanel} from "./SearchPanel";
 
 
 class AuthPanel extends React.Component{
@@ -31,16 +32,18 @@ class AuthPanel extends React.Component{
         //alert('Header render!');
         if(this.state.loggedIn) return (
             <div className="reg_and_auth col-md-4">
-            <span className="mx-2">
-            <i className="fas fa-user"></i>{this.state.name}
-        </span>
-                <Link to="/logout" className="btn">
-                    <i className="fa fa-sign-out-alt" aria-hidden="true"></i>
-                    Выход
-                </Link>
+                <SearchPanel />
+                <span className="mx-2">
+                    <i className="fas fa-user"></i>{this.state.name}
+                </span>
+                    <Link to="/logout" className="btn">
+                        <i className="fa fa-sign-out-alt" aria-hidden="true"></i>
+                        Выход
+                    </Link>
             </div>
         ); else return (
             <div className="reg_and_auth col-md-4">
+                <SearchPanel />
                 <Link to="/reg" className="btn ms-2">
                     <i className="fa fa-address-book me-1" aria-hidden="true"></i>
                     <span className="visible-md">Регистрация</span></Link>
@@ -98,6 +101,7 @@ export class Header extends React.Component{
                         </Link>
                     </div>
                     <AuthPanel />
+                    {/*<SearchPanel />*/}
                 </div>
             </header>
         );

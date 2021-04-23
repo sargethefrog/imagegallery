@@ -4,6 +4,8 @@ import * as StackBlur from "stackblur-canvas";
 import vintagejs from "vintagejs";
 import {Header} from "./Header";
 import {host} from "../config";
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 export class AddImage extends React.Component{
 
@@ -129,6 +131,7 @@ export class AddImage extends React.Component{
         let name = e.target.name;
         let value = e.target.value;
         this.setState({[name] : value});
+        /*console.log('VAL : ',this.refs.brightnessRange.state.value);*/
         let brightness = this.refs.brightnessRange.value / 10;
         let contrast = this.refs.contrastRange.value / 10;
         let saturation = this.refs.saturationRange.value / 10;
@@ -159,6 +162,10 @@ export class AddImage extends React.Component{
                 }
             });
     }
+
+    /*handlerControlsChange(){
+        alert(this);
+    }*/
 
     handlerBrightnessChange(e){
         let v = e.target.value;
@@ -223,15 +230,29 @@ export class AddImage extends React.Component{
                                         <canvas id="file_canvas" hidden ref="file_canvas"></canvas>
                                     </div>
                                     <div id="controls" className="my-2">
+                                        <i className="fas fa-star-of-life"></i>
                                         Яркость :
                                         <input id="brightnessRange" type="range" min="-10" max="10" value={this.state.brightnessValue} onChange={this.handlerControlsChange} ref="brightnessRange" name="brightnessValue" />
                                         <br />
+                                        {/*<Slider
+                                            min={-50}
+                                            max={50}
+                                            handleStyle={{backgroundColor : '#99cc41', width : '20px', height : '20px',top : '2px',border : 'none'}}
+                                            trackStyle={{backgroundColor : '#9DE71E'}}
+                                            ref="brightnessRange"
+                                            name="brightnessValue"
+                                            onChange={this.handlerControlsChange}
+                                            defaultValue={0}
+                                        />*/}
+                                        <i className="fas fa-adjust"></i>
                                         Контраст :
                                         <input id="contrastRange" type="range" min="-10" max="10" value={this.state.contrastValue} onChange={this.handlerControlsChange} ref="contrastRange" name="contrastValue" />
                                         <br />
+                                        <i className="fas fa-palette"></i>
                                         Насыщенность :
                                         <input id="saturationRange" type="range" min="0" max="10" value={this.state.saturationValue} onChange={this.handlerControlsChange} ref="saturationRange" name="saturationValue" />
                                         <br />
+                                        <i className="fas fa-tint"></i>
                                         Размытие :
                                         <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerControlsChange} ref="blurRange" name="blurValue" />
                                         <br />

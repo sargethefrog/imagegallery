@@ -10,6 +10,7 @@ import {Reg} from "./components/Reg";
 import {Auth} from "./components/Auth";
 import {Logout} from "./components/Logout";
 import {EditImage} from "./components/EditImage";
+import {Search} from "./components/Search";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/auth" render={() => <Auth />} />
           <Route path="/logout" render={() => <Logout />} />
           <Route path="/edit_image/:id" component={EditImage} />
+          <Route path="/search/:search" component={Search} />
           </div>
           <Footer />
       </BrowserRouter>

@@ -4,8 +4,9 @@ import {Header} from "./Header";
 import {host} from "../config";
 import Masonry from 'react-masonry-css';
 import FsLightbox from 'fslightbox-react';
+import {SingleImage,LightBox} from './SingleImage';
 
-let openSlide;
+/*let openSlide;
 
 function LightBox(props) {
     const [lightboxController, setLightboxController] = useState({
@@ -109,7 +110,6 @@ class SingleImage extends React.Component{
 
     render(){
         return (
-           /* <div className="col-md-4 my-3">*/
             <div>
                 {this.state.confirmDialog}
                 <figure>
@@ -124,7 +124,7 @@ class SingleImage extends React.Component{
             </div>
         );
     }
-}
+}*/
 
 export class Images extends React.Component{
     constructor() {
