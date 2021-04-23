@@ -22,14 +22,6 @@ export class Search extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 console.log('GET IMAGES (SEARCH) : ', result);
-                this.setState({
-                    albumTitle : result.title,
-                    albumDescription : result.description,
-                    albumAuthor : result.author,
-                    creationDate : result.datetime,
-                    albumId : result.id,
-                    userId : result.userId
-                });
                 this.result = result;
                 fetch(host + '/php/getUser.php',{
                     credentials : "include"

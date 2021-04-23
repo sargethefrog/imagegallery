@@ -12,11 +12,15 @@ export class SearchPanel extends React.Component{
     }
     showModal(){
         this.setState({
-            modal : <div className="search_modal">
-                <input type="text" id="search_text_input" autoFocus onKeyUp={this.handlerEnter}/>
-                <button className="start_search" type="button" onClick={this.startSearch}>Искать</button>
-                <i className="fas fa-times-circle close_search" onClick={this.closeModal}></i>
-            </div>
+            modal :
+            <>
+                <div className="black_screen"></div>
+                <div className="search_modal">
+                    <input type="text" id="search_text_input" autoFocus onKeyUp={this.handlerEnter}/>
+                    <button className="start_search" type="button" onClick={this.startSearch}>Искать</button>
+                    <i className="fas fa-times-circle close_search" onClick={this.closeModal}></i>
+                </div>
+            </>
         });
     }
     handlerEnter(e){
