@@ -1,1 +1,1 @@
-export const host = 'http://y91756wn.beget.tech/imagegallery';
+export const host = 'http://y91756wn.beget.tech';

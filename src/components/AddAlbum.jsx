@@ -12,11 +12,10 @@ export class AddAlbum extends React.Component{
     }
 
     componentDidMount(){
-        fetch(host + '/php/getUser.php',{
+        fetch(host + '/getUser',{
             credentials : "include"
         }).then(response => response.json())
             .then(result => {
-                console.log('ADD_ALBUM : ', result);
                 if(result.result == 'error'){
                     this.setState({content : <Redirect to="/" />});
                 } else {
@@ -47,7 +46,7 @@ export class AddAlbum extends React.Component{
         e.preventDefault();
         const formData = new FormData(e.target);
         formData.append('user_id',this.state.userId);
-        fetch(host + '/php/handlerAddAlbum.php',{
+        fetch(host + '/handlerAddAlbum',{
             method : 'POST',
             body : formData
         }).then(response => response.json())

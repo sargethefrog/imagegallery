@@ -16,14 +16,14 @@ export class Search extends React.Component{
     getResults(){
         const formData = new FormData();
         formData.append('search',this.props.match.params.search);
-        fetch(host + '/php/handlerSearch.php',{
+        fetch(host + '/handlerSearch',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
             .then(result => {
                 console.log('GET IMAGES (SEARCH) : ', result);
                 this.result = result;
-                fetch(host + '/php/getUser.php',{
+                fetch(host + '/getUser',{
                     credentials : "include"
                 }).then(response => response.json())
                     .then(result => {

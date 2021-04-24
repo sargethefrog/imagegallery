@@ -9,7 +9,7 @@ export class Logout extends React.Component{
     }
 
     componentDidMount(){
-        fetch(host + '/php/handlerLogout.php',{
+        fetch(host + '/handlerLogout',{
             credentials : "include"
         })
             .then(response => response.json())

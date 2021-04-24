@@ -18,24 +18,22 @@ export class EditAlbum extends React.Component{
         console.log(this);
         const formData = new FormData();
         formData.append('id',this.props.match.params.id);
-        fetch(host + '/php/getAlbum.php',{
+        fetch(host + '/getAlbum',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
             .then(result => {
-                /*let albumInfo = {};
-                albumInfo.title = result.title;
-                albumInfo.description = result.description;
-                this.setState({albumInfo : albumInfo});*/
-                this.setState({title : result.title});
-                this.setState({description : result.description});
+                this.setState({
+                    title : result.title,
+                    description : result.description
+                });
             });
     }
     handlerSubmit(e){
         e.preventDefault();
         const formData = new FormData(e.target);
         formData.append('album_id',this.props.match.params.id);
-        fetch(host + '/php/handlerEditAlbum.php',{
+        fetch(host + '/handlerEditAlbum',{
             method : 'POST',
             body : formData
         }).then(response => response.json())

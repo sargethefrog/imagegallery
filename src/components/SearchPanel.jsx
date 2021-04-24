@@ -16,8 +16,12 @@ export class SearchPanel extends React.Component{
             <>
                 <div className="black_screen"></div>
                 <div className="search_modal">
-                    <input type="text" id="search_text_input" autoFocus onKeyUp={this.handlerEnter}/>
-                    <button className="start_search" type="button" onClick={this.startSearch}>Искать</button>
+                    <p className="text-center mt-3">Поиск</p>
+                    <div className="search_controls_wrapper">
+                        <input type="text" id="search_text_input" autoFocus onKeyUp={this.handlerEnter}/>
+                        {/*<button className="start_search" type="button" onClick={this.startSearch}>Искать</button>*/}
+                        <input className="start_search" type="button" onClick={this.startSearch} value="Искать" />
+                    </div>
                     <i className="fas fa-times-circle close_search" onClick={this.closeModal}></i>
                 </div>
             </>

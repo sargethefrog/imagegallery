@@ -39,7 +39,7 @@ class Album extends React.Component{
     deleteAlbum(){
         const formData = new FormData();
         formData.append('id',this.props.id);
-        fetch(host + '/php/handlerDeleteAlbum.php',{
+        fetch(host + '/handlerDeleteAlbum',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
@@ -135,11 +135,10 @@ export class Albums extends React.Component{
     }
     componentDidMount(){
         let albums = [];
-        fetch(host + '/php/getUser.php',{
+        fetch(host + '/getUser',{
             credentials : "include"
         }).then(response => response.json())
             .then(result => {
-                console.log('ALBUMS : LOGGED IN : ', result);
                 if(result.result === 'error'){
                     this.setState({loggedIn : false});
                 } else {
@@ -149,11 +148,10 @@ export class Albums extends React.Component{
                         addAlbumLink : <Link to="/add_album" className="add_album_btn" title="Добавить альбом">+</Link>
                     });
                 }
-                fetch(host + '/php/getAlbums.php')
+                fetch(host + '/getAlbums')
                     .then(response => response.json())
                     .then(result => {
                         result.forEach((album,i) => {
-                            console.log(album);
                             let canEditAlbum = false;
                             if(album.user_id === this.state.userId){
                                 canEditAlbum = true;
@@ -168,7 +166,6 @@ export class Albums extends React.Component{
                                 index={i}
                                 parent={this}
                             />);
-                            console.log(this.state);
                         });
                         this.setState({albums : albums});
                     });

@@ -53,7 +53,7 @@ export class AddImage extends React.Component{
             formData.append('title',this.state.title);
             formData.append('description',this.state.description);
             formData.append('data',fileContent);
-            fetch(host + '/php/uploadImage.php',{
+            fetch(host + '/uploadImage',{
                 method : 'POST',
                 body : formData
             }).then(response => response.json())

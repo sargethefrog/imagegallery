@@ -13,7 +13,7 @@ export class Auth extends React.Component{
     handlerSubmit(e){
         e.preventDefault();
         const formData = new FormData(e.target);
-        fetch(host + '/php/handlerAuth.php',{
+        fetch(host + '/handlerAuth',{
             method : 'POST',
             body : formData,
             credentials : "include"

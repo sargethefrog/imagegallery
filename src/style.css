@@ -53,21 +53,6 @@ header{
     background-color: #030303;
     color:white;
 }
-@media (max-width:768px){
-    #logo{
-        text-align: center;
-
-    }
-    .reg_and_auth{
-        text-align: center;
-
-    }
-}
-@media (min-width:768px){
-    #logo{
-        white-space: nowrap;
-    }
-}
 .images img{
     width:100%;
     height:auto;
@@ -435,9 +420,15 @@ h3 .edit_album:hover i{
     z-index: 999999;
     transform:translate(-50%,-50%);
     /*text-align: center;*/
-    display: flex;
+    /*display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;*/
+}
+.search_modal p{
+    font-size: 1.5rem;
+}
+.search_controls_wrapper{
+    text-align: center;
 }
 #search_text_input{
     border: 1px solid #B2AAA9;
@@ -448,13 +439,13 @@ h3 .edit_album:hover i{
 #search_text_input:focus{
     border: 1px solid #827C7B;
 }
-button.start_search{
+.start_search{
     border: none;
     background-color: #99cc41;
     padding: 4px 8px;
     margin-left: 4px;
 }
-button.start_search:hover{
+.start_search:hover{
     background-color: #B2ED4B;
 }
 .close_search{
@@ -500,4 +491,35 @@ button.start_search:hover{
 /* Style your items */
 .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
     margin-bottom: 30px;
+}
+@media (max-width:860px){
+    .search_modal{
+        width: 80%;
+    }
+}
+@media (max-width:768px){
+    #logo{
+        text-align: center;
+
+    }
+    .reg_and_auth{
+        text-align: center;
+    }
+
+}
+@media (max-width:576px){
+    #search_text_input{
+        display: block;
+        margin: 0 auto;
+    }
+    .start_search{
+        display: block;
+        margin: 20px auto 0 auto;
+        width: 80%;
+    }
+}
+@media (min-width:768px){
+    #logo{
+        white-space: nowrap;
+    }
 }

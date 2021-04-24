@@ -11,7 +11,7 @@ class AuthPanel extends React.Component{
         this.state = {};
     }
     componentDidMount(){
-        fetch(host + '/php/getUser.php',{
+        fetch(host + '/getUser',{
             credentials : 'include'
         }).then(response => response.json())
             .then(result => {
@@ -29,7 +29,6 @@ class AuthPanel extends React.Component{
             });
     }
     render(){
-        //alert('Header render!');
         if(this.state.loggedIn) return (
             <div className="reg_and_auth col-md-4">
                 <SearchPanel />
@@ -65,7 +64,7 @@ export class Header extends React.Component{
     }
 
     componentDidMount(){
-        fetch(host + '/php/getUser.php')
+        fetch(host + '/getUser')
             .then(response => response.json())
             .then(result => {
                 if(result.result != 'error'){
@@ -78,10 +77,14 @@ export class Header extends React.Component{
                 }
 
             });
+        fetch(host + '/getAlbums').then(response => response.text())
+            .then(result => {
+                console.log('TEST : ' + result);
+            });
     }
 
     logout(){
-        fetch(host + '/php/handlerLogout.php')
+        fetch(host + '/handlerLogout')
             .then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
@@ -101,7 +104,6 @@ export class Header extends React.Component{
                         </Link>
                     </div>
                     <AuthPanel />
-                    {/*<SearchPanel />*/}
                 </div>
             </header>
         );
