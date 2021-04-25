@@ -82,40 +82,39 @@ class Album extends React.Component{
     render(){
         if(this.props.count != 0){
             return (
-                /*<div className="col-md-4 my-3">*/
                 <div>
                     {this.state.confirmDialog}
                     <div className="album_info">
-                        <h3 className="text-center my-1">
+                        <h3 className="text-center my-2">
+                            {this.state.addImageBtn}
                             <Link to={'/album/' + this.props.id}>{this.props.title}</Link>
                             {this.state.editAlbumLink}
                             {this.state.deleteAlbumBtn}
                         </h3>
-                        <p className="totally_images px-1">Всего изображений : {this.props.count}</p>
                         <p className="description px-1">
                             {this.props.description}
                         </p>
+                        <p className="totally_images px-1">Всего изображений : {this.props.count}</p>
                     </div>
-                    {this.state.addImageBtn}
+
                     <img src={host + '/uploads/' + this.props.filename} alt={this.props.title} />
                 </div>
             );
         } else if(this.props.edit){
             return (
-                /*<div className="col-md-4 my-3 no_images">*/
                 <div className="no_images">
                     {this.state.confirmDialog}
-                    <h3 className="text-center my-1">
+                    <h3 className="text-center my-2">
                         {this.props.title}
                         {this.state.editAlbumLink}
                         {this.state.deleteAlbumBtn}
                     </h3>
+                    <p className="description px-1">
+                        {this.props.description}
+                    </p>
                     <p>
                         В этом альбоме пока нет изображений.
                         {this.state.addImageLink}
-                    </p>
-                    <p className="description px-1">
-                        {this.props.description}
                     </p>
                 </div>
             );

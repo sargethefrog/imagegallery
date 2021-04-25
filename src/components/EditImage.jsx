@@ -21,7 +21,7 @@ export class EditImage extends React.Component{
         e.preventDefault();
         const formData = new FormData(e.target);
         formData.append('id',this.props.match.params.id);
-        fetch(host + '/php/handlerEditImage.php',{
+        fetch(host + '/handlerEditImage',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
@@ -41,7 +41,7 @@ export class EditImage extends React.Component{
     componentDidMount(){
         const formData = new FormData();
         formData.append('id',this.props.match.params.id);
-        fetch(host + '/php/getImage.php',{
+        fetch(host + '/getImage',{
             method : 'POST',
             body : formData
         }).then(response => response.json())

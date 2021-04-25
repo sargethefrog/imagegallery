@@ -17,7 +17,8 @@ export class AddAlbum extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 if(result.result == 'error'){
-                    this.setState({content : <Redirect to="/" />});
+                    /*this.setState({content : <Redirect to="/" />});*/
+                    window.location.href = '/';
                 } else {
                     this.setState({
                         userId : result.id,
@@ -52,7 +53,8 @@ export class AddAlbum extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 if(result.result === 'success'){
-                    this.setState({info : <Redirect to="/"/>});
+                    /*this.setState({info : <Redirect to="/"/>});*/
+                    window.location.href = '/';
                 } else {
                     this.setState({info : <div id="info" className="error">Ошибка создания альбома.</div>});
                 }

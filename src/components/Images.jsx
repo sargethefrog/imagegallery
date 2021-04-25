@@ -6,100 +6,106 @@ import Masonry from 'react-masonry-css';
 import FsLightbox from 'fslightbox-react';
 import {SingleImage,LightBox} from './SingleImage';
 
-export class Images extends React.Component{
+export class Images extends React.Component {
     constructor() {
         super();
         this.state = {
-            images : []
+            images: []
         };
         this.deleteAlbum = this.deleteAlbum.bind(this);
         this.confirmDialog = this.confirmDialog.bind(this);
         this.cancelDelete = this.cancelDelete.bind(this);
     }
 
-    cancelDelete(){
+    cancelDelete() {
         this.setState({
-            confirmDialog : ''
-        })
+            confirmDialog: ''
+        });
     }
 
-    confirmDialog(){
+    confirmDialog() {
         this.setState({
-            confirmDialog :
+            confirmDialog:
                 <>
                     <div className="black_screen"></div>
                     <div className="confirm_dialog">
                         <p className="text-center title">Удалить альбом?</p>
                         <div className="buttons">
-                            <button type="button" className="dialog_red_btn left_btn" onClick={this.deleteAlbum}>Да</button>
-                            <button type="button" className="dialog_green_btn right_btn" onClick={this.cancelDelete}>Отмена</button>
+                            <button type="button" className="dialog_red_btn left_btn" onClick={this.deleteAlbum}>Да
+                            </button>
+                            <button type="button" className="dialog_green_btn right_btn"
+                                    onClick={this.cancelDelete}>Отмена
+                            </button>
                         </div>
                     </div>
                 </>
         });
     }
 
-    deleteAlbum(){
+    deleteAlbum() {
         const formData = new FormData();
-        formData.append('id',this.state.albumId);
-        fetch(host + '/php/handlerDeleteAlbum.php',{
-            method : 'POST',
-            body : formData
+        formData.append('id', this.state.albumId);
+        fetch(host + '/handlerDeleteAlbum', {
+            method: 'POST',
+            body: formData
         }).then(response => response.json())
             .then(result => {
-                if(result.result === 'success'){
+                if (result.result === 'success') {
                     this.setState({
-                        confirmDialog : <Redirect to="/" />
+                        confirmDialog: <Redirect to="/"/>
                     });
 
                 } else {
                     this.setState({
-                        confirmDialog : ''
+                        confirmDialog: ''
                     });
                     alert('Ошибка удаления альбома!');
                 }
             });
     }
-    componentDidMount(){
+
+    componentDidMount() {
         const formData = new FormData();
-        formData.append('album_id',this.props.match.params.id);
-        fetch(host + '/getImages',{
-            method : 'POST',
-            body : formData
+        formData.append('album_id', this.props.match.params.id);
+        fetch(host + '/getImages', {
+            method: 'POST',
+            body: formData
         }).then(response => response.json())
             .then(result => {
                 console.log('GET IMAGES : ', result);
                 this.setState({
-                    albumTitle : result.title,
-                    albumDescription : result.description,
-                    albumAuthor : result.author,
-                    creationDate : result.datetime,
-                    albumId : result.id,
-                    userId : result.userId
+                    albumTitle: result.title,
+                    albumDescription: result.description,
+                    albumAuthor: result.author,
+                    creationDate: result.datetime,
+                    albumId: result.id,
+                    userId: result.userId
                 });
                 this.result = result;
-                fetch(host + '/getUser',{
-                    credentials : "include"
+                fetch(host + '/getUser', {
+                    credentials: "include"
                 }).then(response => response.json())
                     .then(result => {
                         let edit = false;
-                        if(result !== 'error' && result.id === this.state.userId){
+                        if (result !== 'error' && result.id === this.state.userId) {
                             edit = true;
                             this.setState({
-                                addImageBtn : <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
-                                                    className="add_image_btn">+</Link>,
-                                editAlbumLink : <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
-                                                      title="Редактировать название и описание">
+                                addImageBtn: <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
+                                                   className="add_image_btn">+</Link>,
+                                editAlbumLink: <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
+                                                     title="Редактировать название и описание">
                                     <i className="fas fa-pen-alt mx-2"></i>
                                 </Link>,
-                                deleteAlbumBtn : <button type="button" className="delete_album_btn" title="Удалить альбом" onClick={this.confirmDialog}>-</button>
+                                deleteAlbumBtn: <button type="button" className="delete_album_btn"
+                                                        title="Удалить альбом" onClick={this.confirmDialog}>-</button>
                             });
                         } else {
-                            this.setState({addImageBtn : '',editAlbumLink : ''});
+                            this.setState({addImageBtn: '', editAlbumLink: ''});
                         }
                         let images = [];
                         let sources = [];
-                        this.result.images.forEach((img,i) => {
+                        let captions = [];
+                        this.result.images.forEach((img, i) => {
                             images.push(<SingleImage
                                 filename={img.filename}
                                 title={img.title}
@@ -112,12 +118,15 @@ export class Images extends React.Component{
                                 parent={this}
                             />);
                             sources.push(host + '/uploads/' + img.filename);
+                            captions.push(img.title);
                         });
-                        this.setState({images : images, sources : sources});
+                        this.setState({images: images, sources: sources, captions: captions});
+                        console.log('CAPTIONS : ', this.state.captions);
                     });
             });
     }
-    render(){
+
+    render() {
         /*const breakpointColumnsObj = {
             default: 4,
             1100: 3,
@@ -131,7 +140,7 @@ export class Images extends React.Component{
         };
         return (
             <>
-                <Header />
+                <Header/>
                 <div className="container images">
                     {this.state.confirmDialog}
                     <h1 className="text-center">
@@ -140,7 +149,8 @@ export class Images extends React.Component{
                         {this.state.addImageBtn}
                         {this.state.deleteAlbumBtn}
                     </h1>
-                    <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор : <b>{this.state.albumAuthor}</b>
+                    <p className="album-author my-3"><i className="fas fa-user ms-1 me-2"></i>Автор
+                        : <b>{this.state.albumAuthor}</b>
                     </p>
                     <p className="album-creationdate my-3"><i className="fas fa-clock ms-1 me-2"></i>Время создания
                         : <b>{this.state.creationDate}</b></p>
@@ -157,7 +167,7 @@ export class Images extends React.Component{
                             {this.state.images}
                         </Masonry>
                     </div>
-                    <LightBox sources={this.state.sources} />
+                    <LightBox sources={this.state.sources} captions={this.state.captions}/>
                 </div>
             </>
         );

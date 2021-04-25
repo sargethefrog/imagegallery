@@ -49,7 +49,7 @@ export class SingleImage extends React.Component{
     deleteImage(){
         const formData = new FormData();
         formData.append('id',this.props.id);
-        fetch(host + '/php/handlerDeleteImage.php',{
+        fetch(host + '/handlerDeleteImage',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
