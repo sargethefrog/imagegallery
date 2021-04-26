@@ -30,6 +30,7 @@ export class AddImage extends React.Component{
         this.blurRangeRef = React.createRef();
         this.sepiaCheckBoxRef = React.createRef();
         this.grayscaleCheckBoxRef = React.createRef();
+        this.imageFileRef = React.createRef();
     }
 
     componentDidMount(){
@@ -106,7 +107,7 @@ export class AddImage extends React.Component{
     }
 
     handlerSelectFile(){
-        this.refs.image_file.click();
+        this.imageFileRef.current.click();
     }
 
     fileProcessing(files){
@@ -156,7 +157,6 @@ export class AddImage extends React.Component{
         let name = e.target.name;
         let value = e.target.value;
         this.setState({[name] : value});
-        /*console.log('VAL : ',this.refs.brightnessRange.state.value);*/
         let brightness = this.brightnessRangeRef.current.value / 10;
         let contrast = this.contrastRangeRef.current.value / 10;
         let saturation = this.saturationRangeRef.current.value / 10;
@@ -188,16 +188,10 @@ export class AddImage extends React.Component{
             });
     }
 
-    /*handlerControlsChange(){
-        alert(this);
-    }*/
-
     handlerBrightnessChange(e){
         let v = e.target.value;
         this.setState({brightnessValue : v});
-        //const srcElt = this.refs.file_canvas;
         const srcElt = this.bufferCanvas;
-        //const ctx = srcElt.getContext('2d');
         const ctx = this.fileCanvasRef.current.getContext('2d');
         vintagejs(srcElt,{brightness : v / 10})
             .then(res => {
@@ -243,7 +237,7 @@ export class AddImage extends React.Component{
                             <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" onChange={this.handlerInput} />
                                 <textarea name="description" placeholder="Описание"
                                           className="form-control my-3" onChange={this.handlerInput}></textarea>
-                                <input type="file" name="imagefile" className="form-control my-3" ref="image_file" onChange={this.handlerFileChange} accept="image/jpeg,image/png"/>
+                                <input type="file" name="imagefile" className="form-control my-3" ref={this.imageFileRef} onChange={this.handlerFileChange} accept="image/jpeg,image/png"/>
                                     <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
                                         <div id="upload_icon_wrapper">
                                             <i className="fas fa-file-upload"></i>

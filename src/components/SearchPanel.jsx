@@ -44,8 +44,6 @@ export class SearchPanel extends React.Component{
             searchString = e.target.value;
         }
         if(path == 'search'){
-            /*this.closeModal();
-            this.props.search.getResults(searchString);*/
             window.location.href = '/search/' + searchString;
         } else {
             this.setState({modal : <Redirect to={"/search/" + searchString} />});
