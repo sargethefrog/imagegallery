@@ -14,7 +14,7 @@ export class Reg extends React.Component{
     handlerSubmit(e){
         e.preventDefault();
         const formData = new FormData(e.target);
-        fetch(host + '/php/handlerReg.php',{
+        fetch(host + '/handlerReg',{
             method : 'POST',
             body : formData
         }).then(response => response.json())
