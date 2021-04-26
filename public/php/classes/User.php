@@ -56,6 +56,7 @@
                     echo json_encode(['result' => 'error']);
                 }
             } else {
+                //echo json_encode(['result' => 'error']);
                 echo json_encode(['result' => 'error']);
             }
         }

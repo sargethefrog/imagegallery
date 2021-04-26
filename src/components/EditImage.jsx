@@ -1,6 +1,7 @@
 import React from 'react';
 import {Header} from "./Header";
 import {host} from "../config";
+import {Redirect} from "react-router-dom";
 
 export class EditImage extends React.Component{
 
@@ -47,10 +48,22 @@ export class EditImage extends React.Component{
         }).then(response => response.json())
             .then(result => {
                 if(result.result !== 'error'){
-                    this.setState({
-                        title : result.title,
-                        description : result.description
-                    });
+                    const imageResult = result;
+                    fetch(host + '/getUser',{
+                        credentials : "include"
+                    }).then(response => response.json())
+                        .then(result => {
+                            if(result.id != imageResult.user_id){
+                                this.setState({info : <Redirect to="/" />});
+                            } else {
+                                this.setState({
+                                    title : imageResult.title,
+                                    description : imageResult.description
+                                });
+                            }
+                        });
+                } else {
+                    this.setState({info : <Redirect to="/" />});
                 }
             });
     }

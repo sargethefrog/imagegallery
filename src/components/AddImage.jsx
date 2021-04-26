@@ -26,13 +26,35 @@ export class AddImage extends React.Component{
     }
 
     componentDidMount(){
-        this.setState({
-            blurValue : 0,
-            brightnessValue : 0,
-            contrastValue : 0,
-            saturationValue : 10,
-            fileAdded : false
-        });
+        const formData = new FormData();
+        formData.append('id',this.props.match.params.id);
+        fetch(host + '/getAlbum',{
+            method : 'POST',
+            body : formData
+        }).then(response => response.json())
+            .then(result => {
+                if(result.result == 'error'){
+                    this.setState({info : <Redirect to="/" />});
+                } else {
+                    const albumResult = result;
+                    fetch(host + '/getUser',{
+                        credentials : "include"
+                    }).then(response => response.json())
+                        .then(result => {
+                            if(result.id != albumResult.user_id){
+                                this.setState({info : <Redirect to="/" />});
+                            } else {
+                                this.setState({
+                                    blurValue : 0,
+                                    brightnessValue : 0,
+                                    contrastValue : 0,
+                                    saturationValue : 10,
+                                    fileAdded : false
+                                });
+                            }
+                        });
+                }
+            });
     }
 
     handlerInput(e){

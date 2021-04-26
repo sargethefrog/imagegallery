@@ -13,6 +13,19 @@
             $result['images'] = $images;
             echo json_encode($result);
         }
+        static function getImage($id){
+            global $mysqli;
+            if($id){
+                $result = $mysqli -> query("SELECT imggallery_images.*,imggallery_albums.user_id FROM `imggallery_images` JOIN `imggallery_albums` ON imggallery_images.album_id = imggallery_albums.id WHERE imggallery_images.id = $id;");
+                if($result -> num_rows){
+                    echo json_encode($result -> fetch_assoc());
+                } else {
+                    echo json_encode(['result' => 'error']);
+                }
+            } else {
+                echo json_encode(['result' => 'error']);
+            }
+        }
         static function getAlbums(){
             global $mysqli;
             $result = [];
@@ -31,8 +44,13 @@
         static function getAlbum($id){
             global $mysqli;
             $result = $mysqli -> query("SELECT * FROM `imggallery_albums` WHERE `id` = $id");
-            $row = $result -> fetch_assoc();
-            echo json_encode($row);
+            if($result -> num_rows){
+                $row = $result -> fetch_assoc();
+                echo json_encode($row);
+            } else {
+                echo json_encode(['result' => 'error']);
+            }
+            
         }
         static function handlerEditAlbum($title,$description,$id){
             global $mysqli;

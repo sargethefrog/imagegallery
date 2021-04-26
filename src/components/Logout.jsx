@@ -14,6 +14,7 @@ export class Logout extends React.Component{
         })
             .then(response => response.json())
             .then(result => {
+                console.log(result);
                 window.history.back();
 
             });

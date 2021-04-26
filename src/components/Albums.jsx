@@ -164,6 +164,7 @@ export class Albums extends React.Component{
                                 edit={canEditAlbum}
                                 index={i}
                                 parent={this}
+                                key={i}
                             />);
                         });
                         this.setState({albums : albums});

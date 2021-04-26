@@ -1,6 +1,7 @@
 import React from 'react';
 import {Header} from "./Header";
 import {host} from "../config";
+import {Redirect} from "react-router-dom";
 
 export class EditAlbum extends React.Component{
     constructor() {
@@ -23,10 +24,23 @@ export class EditAlbum extends React.Component{
             body : formData
         }).then(response => response.json())
             .then(result => {
-                this.setState({
-                    title : result.title,
-                    description : result.description
-                });
+                const albumResult = result;
+                const userId = result.user_id;
+                fetch(host + '/getUser',{
+                    credentials : "include"
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        if(result.result == 'error' || userId != result.id){
+                            this.setState({info : <Redirect to='/' />});
+                        } else {
+                            this.setState({
+                                title : albumResult.title,
+                                description : albumResult.description
+                            });
+                        }
+                    });
+
             });
     }
     handlerSubmit(e){

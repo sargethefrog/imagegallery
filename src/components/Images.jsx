@@ -116,6 +116,7 @@ export class Images extends React.Component {
                                 album={this.state.albumId}
                                 index={i}
                                 parent={this}
+                                key={i}
                             />);
                             sources.push(host + '/uploads/' + img.filename);
                             captions.push(img.title);
