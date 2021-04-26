@@ -66,64 +66,76 @@ export class Images extends React.Component {
 
     componentDidMount() {
         const formData = new FormData();
-        formData.append('album_id', this.props.match.params.id);
-        fetch(host + '/getImages', {
-            method: 'POST',
-            body: formData
+        formData.append('id', this.props.match.params.id);
+        fetch(host + '/getAlbum',{
+            method : 'POST',
+            body : formData
         }).then(response => response.json())
             .then(result => {
-                console.log('GET IMAGES : ', result);
-                this.setState({
-                    albumTitle: result.title,
-                    albumDescription: result.description,
-                    albumAuthor: result.author,
-                    creationDate: result.datetime,
-                    albumId: result.id,
-                    userId: result.userId
-                });
-                this.result = result;
-                fetch(host + '/getUser', {
-                    credentials: "include"
-                }).then(response => response.json())
-                    .then(result => {
-                        let edit = false;
-                        if (result !== 'error' && result.id === this.state.userId) {
-                            edit = true;
+                if(result.result == 'error'){
+                    this.setState({redirect : <Redirect to="/" />})
+                } else {
+                    const formData = new FormData();
+                    formData.append('album_id', this.props.match.params.id);
+                    fetch(host + '/getImages', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json())
+                        .then(result => {
+                            console.log('GET IMAGES : ', result);
                             this.setState({
-                                addImageBtn: <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
-                                                   className="add_image_btn">+</Link>,
-                                editAlbumLink: <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
-                                                     title="Редактировать название и описание">
-                                    <i className="fas fa-pen-alt mx-2"></i>
-                                </Link>,
-                                deleteAlbumBtn: <button type="button" className="delete_album_btn"
-                                                        title="Удалить альбом" onClick={this.confirmDialog}>-</button>
+                                albumTitle: result.title,
+                                albumDescription: result.description,
+                                albumAuthor: result.author,
+                                creationDate: result.datetime,
+                                albumId: result.id,
+                                userId: result.userId
                             });
-                        } else {
-                            this.setState({addImageBtn: '', editAlbumLink: ''});
-                        }
-                        let images = [];
-                        let sources = [];
-                        let captions = [];
-                        this.result.images.forEach((img, i) => {
-                            images.push(<SingleImage
-                                filename={img.filename}
-                                title={img.title}
-                                description={img.description}
-                                datetime={img.datetime}
-                                edit={edit}
-                                id={img.id}
-                                album={this.state.albumId}
-                                index={i}
-                                parent={this}
-                                key={i}
-                            />);
-                            sources.push(host + '/uploads/' + img.filename);
-                            captions.push(img.title);
+                            this.result = result;
+                            fetch(host + '/getUser', {
+                                credentials: "include"
+                            }).then(response => response.json())
+                                .then(result => {
+                                    let edit = false;
+                                    if (result !== 'error' && result.id === this.state.userId) {
+                                        edit = true;
+                                        this.setState({
+                                            addImageBtn: <Link to={'/add_image/' + this.state.albumId} title="Добавить изображение"
+                                                               className="add_image_btn">+</Link>,
+                                            editAlbumLink: <Link to={'/edit_album/' + this.state.albumId} className="edit_album"
+                                                                 title="Редактировать название и описание">
+                                                <i className="fas fa-pen-alt mx-2"></i>
+                                            </Link>,
+                                            deleteAlbumBtn: <button type="button" className="delete_album_btn"
+                                                                    title="Удалить альбом" onClick={this.confirmDialog}>-</button>
+                                        });
+                                    } else {
+                                        this.setState({addImageBtn: '', editAlbumLink: ''});
+                                    }
+                                    let images = [];
+                                    let sources = [];
+                                    let captions = [];
+                                    this.result.images.forEach((img, i) => {
+                                        images.push(<SingleImage
+                                            filename={img.filename}
+                                            title={img.title}
+                                            description={img.description}
+                                            datetime={img.datetime}
+                                            edit={edit}
+                                            id={img.id}
+                                            album={this.state.albumId}
+                                            index={i}
+                                            parent={this}
+                                            key={i}
+                                        />);
+                                        sources.push(host + '/uploads/' + img.filename);
+                                        captions.push(img.title);
+                                    });
+                                    this.setState({images: images, sources: sources, captions: captions});
+                                    console.log('CAPTIONS : ', this.state.captions);
+                                });
                         });
-                        this.setState({images: images, sources: sources, captions: captions});
-                        console.log('CAPTIONS : ', this.state.captions);
-                    });
+                }
             });
     }
 
@@ -142,6 +154,7 @@ export class Images extends React.Component {
         return (
             <>
                 <Header/>
+                {this.state.redirect}
                 <div className="container images">
                     {this.state.confirmDialog}
                     <h1 className="text-center">
