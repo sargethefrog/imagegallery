@@ -16,6 +16,7 @@
         static function getImage($id){
             global $mysqli;
             if($id){
+                /*$result = $mysqli -> query("SELECT * FROM `imggallery_images` WHERE `id` = $id;");*/
                 $result = $mysqli -> query("SELECT imggallery_images.*,imggallery_albums.user_id FROM `imggallery_images` JOIN `imggallery_albums` ON imggallery_images.album_id = imggallery_albums.id WHERE imggallery_images.id = $id;");
                 if($result -> num_rows){
                     echo json_encode($result -> fetch_assoc());
@@ -122,7 +123,7 @@
             if($filename){
                 $mysqli -> query("DELETE FROM `imggallery_images` WHERE `id` = $id;");
                 if($mysqli -> affected_rows){
-                    if(unlink("../uploads/$filename")){
+                    if(unlink("uploads/$filename")){
                         echo json_encode(['result' => 'success']);
                     } else {
                         echo json_encode(['result' => 'error']);
@@ -155,13 +156,12 @@
         }
         static function uploadImage($title,$description,$data,$album_id){
             global $mysqli;
-            define('UPLOADS_DIR','../uploads');
-            if(!is_dir('../uploads')){
-                mkdir('../uploads');
+            if(!is_dir('uploads')){
+                mkdir('uploads');
             }
             $filename = 'image'.time().'.jpg';
             if($data && $album_id && $title && $description){
-                $file = fopen('../uploads/' . $filename,'w');
+                $file = fopen('uploads/' . $filename,'w');
                 $data = base64_decode($data);
                 fwrite($file,$data);
                 fclose($file);

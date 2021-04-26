@@ -96,8 +96,9 @@ class Album extends React.Component{
                         </p>
                         <p className="totally_images px-1">Всего изображений : {this.props.count}</p>
                     </div>
-
-                    <img src={host + '/uploads/' + this.props.filename} alt={this.props.title} />
+                    <Link to={'/album/' + this.props.id}>
+                        <img src={host + '/uploads/' + this.props.filename} alt={this.props.title} />
+                    </Link>
                 </div>
             );
         } else if(this.props.edit){
