@@ -234,9 +234,9 @@ export class AddImage extends React.Component{
                     <h1 className="text-center">Добавить изображение</h1>
                     {this.state.info}
                     <form id="add_image_form" onSubmit={this.handlerSubmit}>
-                            <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" onChange={this.handlerInput} />
+                            <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" onChange={this.handlerInput} value={this.state.title}/>
                                 <textarea name="description" placeholder="Описание"
-                                          className="form-control my-3" onChange={this.handlerInput}></textarea>
+                                          className="form-control my-3" onChange={this.handlerInput} value={this.state.description}></textarea>
                                 <input type="file" name="imagefile" className="form-control my-3" ref={this.imageFileRef} onChange={this.handlerFileChange} accept="image/jpeg"/>
                                     <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
                                         <div id="upload_icon_wrapper">
