@@ -77,10 +77,6 @@ export class Header extends React.Component{
                 }
 
             });
-        fetch(host + '/getAlbums').then(response => response.text())
-            .then(result => {
-                console.log('TEST : ' + result);
-            });
     }
 
     logout(){

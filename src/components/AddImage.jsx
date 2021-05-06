@@ -1,12 +1,10 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
-import * as StackBlur from "stackblur-canvas";
-import vintagejs from "vintagejs";
 import {Header} from "./Header";
 import {host} from "../config";
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-
+import fx from 'glfx';
 export class AddImage extends React.Component{
 
     constructor() {
@@ -14,10 +12,6 @@ export class AddImage extends React.Component{
         this.state = {};
         this.handlerSubmit = this.handlerSubmit.bind(this);
         this.handlerDrop = this.handlerDrop.bind(this);
-        this.handlerBlurChange = this.handlerBlurChange.bind(this);
-        this.handlerBrightnessChange = this.handlerBrightnessChange.bind(this);
-        this.handlerContrastChange = this.handlerContrastChange.bind(this);
-        this.handlerSaturationChange = this.handlerSaturationChange.bind(this);
         this.handlerControlsChange = this.handlerControlsChange.bind(this);
         this.handlerSelectFile = this.handlerSelectFile.bind(this);
         this.handlerFileChange = this.handlerFileChange.bind(this);
@@ -31,6 +25,8 @@ export class AddImage extends React.Component{
         this.sepiaCheckBoxRef = React.createRef();
         this.grayscaleCheckBoxRef = React.createRef();
         this.imageFileRef = React.createRef();
+        this.fxCanvas = fx.canvas();
+        //this.filter = new WebGLImageFilter();
     }
 
     componentDidMount(){
@@ -56,7 +52,8 @@ export class AddImage extends React.Component{
                                     blurValue : 0,
                                     brightnessValue : 0,
                                     contrastValue : 0,
-                                    saturationValue : 10,
+                                    /*saturationValue : 10,*/
+                                    saturationValue : 0,
                                     fileAdded : false
                                 });
                             }
@@ -142,83 +139,34 @@ export class AddImage extends React.Component{
         this.fileProcessing(e.target.files);
     }
 
-    handlerBlurChange(e){
-        let v = e.target.value;
-        this.setState({blurValue : v});
-        const ctx = this.fileCanvasRef.current.getContext('2d');
-        ctx.drawImage(this.bufferCanvas, 0, 0);
-        const fileCanvas = this.fileCanvasRef.current;
-        StackBlur.canvasRGB(
-            fileCanvas, 0, 0, fileCanvas.width, fileCanvas.height, v
-        );
-    }
-
-    handlerControlsChange(e){
-        let name = e.target.name;
-        let value = e.target.value;
-        this.setState({[name] : value});
-        let brightness = this.brightnessRangeRef.current.value / 10;
-        let contrast = this.contrastRangeRef.current.value / 10;
-        let saturation = this.saturationRangeRef.current.value / 10;
-        let blur = +this.blurRangeRef.current.value;
+    handlerControlsChange(){
+        let brightness = this.brightnessRangeRef.current.state.value / 10;
+        let contrast = this.contrastRangeRef.current.state.value / 10;
+        let saturation = this.saturationRangeRef.current.state.value / 10;
+        let blur = +this.blurRangeRef.current.state.value;
         let sepia = this.sepiaCheckBoxRef.current.checked;
         let gray = this.grayscaleCheckBoxRef.current.checked;
-        console.log(blur);
-        const effect = {brightness : brightness,contrast : contrast,saturation : saturation};
+        const srcElt = this.bufferCanvas;
+        const ctx = this.fileCanvasRef.current.getContext('2d');
+        const tx = this.fxCanvas.texture(srcElt);
+        this.fxCanvas.draw(tx);
+        if(brightness || contrast){
+            this.fxCanvas.brightnessContrast(brightness,contrast);
+        }
+        if(blur){
+            this.fxCanvas.triangleBlur(blur);
+        }
+        if(saturation){
+            this.fxCanvas.hueSaturation(0,saturation);
+        }
         if(sepia){
-            effect.sepia = true;
+            this.fxCanvas.sepia(1);
         }
         if(gray){
-            effect.gray = true;
+            this.fxCanvas.hueSaturation(0,-1);
         }
-        console.log(effect);
-        const srcElt = this.bufferCanvas;
-        const ctx = this.fileCanvasRef.current.getContext('2d');
-        vintagejs(srcElt,effect)
-            .then(res => {
-                if(!blur){
-                    ctx.drawImage(res.getCanvas(),0,0);
-                } else {
-                    let processedCanvas = res.getCanvas();
-                    StackBlur.canvasRGB(
-                        processedCanvas, 0, 0, processedCanvas.width, processedCanvas.height, blur
-                    );
-                    ctx.drawImage(processedCanvas,0,0);
-                }
-            });
-    }
-
-    handlerBrightnessChange(e){
-        let v = e.target.value;
-        this.setState({brightnessValue : v});
-        const srcElt = this.bufferCanvas;
-        const ctx = this.fileCanvasRef.current.getContext('2d');
-        vintagejs(srcElt,{brightness : v / 10})
-            .then(res => {
-                ctx.drawImage(res.getCanvas(),0,0);
-            });
-    }
-
-    handlerContrastChange(e){
-        let v = e.target.value;
-        this.setState({contrastValue : v});
-        const srcElt = this.bufferCanvas;
-        const ctx = this.fileCanvasRef.current.getContext('2d');
-        vintagejs(srcElt,{contrast : v / 10})
-            .then(res => {
-                ctx.drawImage(res.getCanvas(),0,0);
-            });
-    }
-
-    handlerSaturationChange(e){
-        let v = e.target.value;
-        this.setState({saturationValue : v});
-        const srcElt = this.bufferCanvas;
-        const ctx = this.fileCanvasRef.current.getContext('2d');
-        vintagejs(srcElt,{saturation : v / 10})
-            .then(res => {
-                ctx.drawImage(res.getCanvas(),0,0);
-            });
+        this.fxCanvas.update();
+        ctx.drawImage(this.fxCanvas,0,0);
     }
 
     handlerDrop(e){
@@ -234,57 +182,110 @@ export class AddImage extends React.Component{
                     <h1 className="text-center">Добавить изображение</h1>
                     {this.state.info}
                     <form id="add_image_form" onSubmit={this.handlerSubmit}>
-                            <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" onChange={this.handlerInput} value={this.state.title}/>
-                                <textarea name="description" placeholder="Описание"
-                                          className="form-control my-3" onChange={this.handlerInput} value={this.state.description}></textarea>
-                                <input type="file" name="imagefile" className="form-control my-3" ref={this.imageFileRef} onChange={this.handlerFileChange} accept="image/jpeg"/>
-                                    <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
-                                        <div id="upload_icon_wrapper">
-                                            <i className="fas fa-file-upload"></i>
-
-                                        </div>
-                                        <button id="selectFile" type="button" onClick={this.handlerSelectFile}>Обзор...</button>
-                                    </div>
-                                    <div id="file_canvas_wrapper">
-                                        <canvas id="file_canvas" hidden ref={this.fileCanvasRef}></canvas>
-                                    </div>
-                                    <div id="controls" className="my-2">
+                        <input type="text" name="title" className="form-control my-3" placeholder="Заголовок" onChange={this.handlerInput} value={this.state.title}/>
+                        <textarea name="description" placeholder="Описание"
+                                  className="form-control my-3" onChange={this.handlerInput} value={this.state.description}></textarea>
+                        <input type="file" name="imagefile" className="form-control my-3" ref={this.imageFileRef} onChange={this.handlerFileChange} accept="image/jpeg"/>
+                        <div id="drop_zone" onDragOver={this.handlerDragOver} onDragLeave={this.handlerDragLeave} onDrop={this.handlerDrop}>
+                            <div id="upload_icon_wrapper">
+                                <i className="fas fa-file-upload"></i>
+                            </div>
+                            <button id="selectFile" type="button" onClick={this.handlerSelectFile}>Обзор...</button>
+                        </div>
+                        <div id="file_canvas_wrapper">
+                            <canvas id="file_canvas" hidden ref={this.fileCanvasRef}></canvas>
+                        </div>
+                        <div id="controls" className="my-2">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-4">
                                         <i className="fas fa-star-of-life"></i>
                                         Яркость :
-                                        <input id="brightnessRange" type="range" min="-10" max="10" value={this.state.brightnessValue} onChange={this.handlerControlsChange} ref={this.brightnessRangeRef} name="brightnessValue" />
-                                        <br />
-                                        {/*<Slider
-                                            min={-50}
-                                            max={50}
+                                    </div>
+                                    <div className="col-md-8">
+                                        <Slider
+                                            min={-11}
+                                            max={11}
                                             handleStyle={{backgroundColor : '#99cc41', width : '20px', height : '20px',top : '2px',border : 'none'}}
                                             trackStyle={{backgroundColor : '#9DE71E'}}
-                                            ref="brightnessRange"
+                                            ref={this.brightnessRangeRef}
                                             name="brightnessValue"
                                             onChange={this.handlerControlsChange}
                                             defaultValue={0}
-                                        />*/}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-4">
                                         <i className="fas fa-adjust"></i>
                                         Контраст :
-                                        <input id="contrastRange" type="range" min="-10" max="10" value={this.state.contrastValue} onChange={this.handlerControlsChange} ref={this.contrastRangeRef} name="contrastValue" />
-                                        <br />
+                                    </div>
+                                    <div className="col-md-8">
+                                        <Slider
+                                            min={-11}
+                                            max={11}
+                                            handleStyle={{backgroundColor : '#99cc41', width : '20px', height : '20px',top : '2px',border : 'none'}}
+                                            trackStyle={{backgroundColor : '#9DE71E'}}
+                                            ref={this.contrastRangeRef}
+                                            name="contrastValue"
+                                            onChange={this.handlerControlsChange}
+                                            defaultValue={0}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-4">
                                         <i className="fas fa-palette"></i>
                                         Насыщенность :
-                                        <input id="saturationRange" type="range" min="0" max="10" value={this.state.saturationValue} onChange={this.handlerControlsChange} ref={this.saturationRangeRef} name="saturationValue" />
-                                        <br />
+                                    </div>
+                                    <div className="col-md-8">
+                                        <Slider
+                                            min={-11}
+                                            max={11}
+                                            handleStyle={{backgroundColor : '#99cc41', width : '20px', height : '20px',top : '2px',border : 'none'}}
+                                            trackStyle={{backgroundColor : '#9DE71E'}}
+                                            ref={this.saturationRangeRef}
+                                            name="saturationValue"
+                                            onChange={this.handlerControlsChange}
+                                            defaultValue={0}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-md-4">
                                         <i className="fas fa-tint"></i>
                                         Размытие :
-                                        <input id="blurRange" type="range" min="0" max="50" value={this.state.blurValue} onChange={this.handlerControlsChange} ref={this.blurRangeRef} name="blurValue" />
-                                        <br />
-                                        <label><input id="sepiaCheckbox" type="checkbox" ref={this.sepiaCheckBoxRef} onChange={this.handlerControlsChange} />Сепия</label>
-                                        <br />
-                                        <label><input id="grayscaleCheckbox" type="checkbox" ref={this.grayscaleCheckBoxRef} onChange={this.handlerControlsChange} />Оттенки серого</label>
                                     </div>
-                                    <input type="submit" name="add_image_submit"
-                                           className="form-control btn btn-primary my-3" value="Добавить изображение" />
+                                    <div className="col-md-8">
+                                        <Slider
+                                            min={0}
+                                            max={50}
+                                            handleStyle={{backgroundColor : '#99cc41', width : '20px', height : '20px',top : '2px',border : 'none'}}
+                                            trackStyle={{backgroundColor : '#9DE71E'}}
+                                            ref={this.blurRangeRef}
+                                            name="blurValue"
+                                            onChange={this.handlerControlsChange}
+                                            defaultValue={0}
+                                        />
+                                    </div>
+                                    <label><input id="sepiaCheckbox" type="checkbox" ref={this.sepiaCheckBoxRef} onChange={this.handlerControlsChange} />Сепия</label>
+                                    <br />
+                                    <label><input id="grayscaleCheckbox" type="checkbox" ref={this.grayscaleCheckBoxRef} onChange={this.handlerControlsChange} />Оттенки серого</label>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" name="add_image_submit"
+                               className="form-control btn btn-primary my-3" value="Добавить изображение" />
                     </form>
                 </div>
             </>
         );
-
     }
+
 }
